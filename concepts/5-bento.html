@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tally · Your Claude usage, in one little grid</title>
+<meta name="description" content="Tally tracks your Claude.ai session and weekly usage as live rings in your macOS menu bar. Local, notarized, free." />
+<link rel="icon" href="../favicon.ico?v=2" sizes="any" />
+<link rel="apple-touch-icon" href="../apple-touch-icon.png?v=2" />
+<meta name="theme-color" content="#0c0e14" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#0c0e14; --tile:#14171f; --tile-2:#171b25; --ink:#eef0f5; --soft:#8b93a4; --line:rgba(255,255,255,.08);
+  --teal:#4FD6E6; --teal-d:#1E9AAD; --green:#34D058; --yellow:#FFD60A; --red:#FF453A;
+  --sans:'Plus Jakarta Sans',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--teal);color:#04231f}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono)}
+.glow{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(50vw 36vw at 50% -8%, rgba(79,214,230,.12), transparent 70%),radial-gradient(40vw 30vw at 92% 30%, rgba(255,69,58,.07), transparent 70%)}
+
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(12,14,20,.7)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;font-size:18px}
+.brand img{width:26px;height:26px;border-radius:7px}
+.dl{padding:11px 19px;border-radius:12px;font-weight:700;font-size:14px;background:linear-gradient(135deg,#3FD8C9,#1E9AAD);color:#04231f;transition:transform .2s}
+.dl:hover{transform:translateY(-2px)}
+
+header{text-align:center;padding:54px 0 18px}
+.kick{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--soft);background:rgba(255,255,255,.04);border:1px solid var(--line);padding:7px 14px;border-radius:999px;margin-bottom:24px}
+.kick b{color:var(--teal)}
+h1{font-weight:900;font-size:clamp(40px,6.6vw,76px);line-height:1.0;letter-spacing:-.04em}
+h1 .g{background:linear-gradient(120deg,#7df0ff,#34D058);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{margin:22px auto 0;font-size:clamp(16px,1.8vw,19px);color:var(--soft);max-width:54ch;line-height:1.55}
+.lead b{color:var(--ink)}
+.cta{margin-top:30px;display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:15.5px;padding:15px 26px;border-radius:14px;
+  background:linear-gradient(135deg,#3FD8C9,#1E9AAD);color:#04231f;box-shadow:0 18px 40px -16px rgba(63,216,201,.55);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 26px 50px -16px rgba(63,216,201,.7)}
+.btn svg{width:16px;height:16px;fill:currentColor}
+.note{font-family:var(--mono);font-size:12.5px;color:var(--soft)}
+.note .ok{color:#46d58a}
+
+/* ---- bento grid ---- */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(118px,auto);gap:16px;margin:54px 0 30px}
+@media(max-width:900px){.bento{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:600px){.bento{grid-template-columns:repeat(2,1fr)}}
+.tile{position:relative;background:var(--tile);border:1px solid var(--line);border-radius:22px;padding:22px;overflow:hidden;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .25s}
+.tile:hover{transform:translateY(-4px);border-color:rgba(79,214,230,.4);box-shadow:0 24px 50px -28px rgba(0,0,0,.7)}
+.tile .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.tile h3{font-weight:800;font-size:18px;letter-spacing:-.01em;margin:8px 0 6px}
+.tile p{font-size:13.5px;color:var(--soft);line-height:1.5}
+
+/* spans */
+.t-hero{grid-column:span 3;grid-row:span 2;display:flex;flex-direction:column}
+.t-tall{grid-column:span 3;grid-row:span 2}
+.t-wide{grid-column:span 4}
+.t-half{grid-column:span 2}
+.t-third{grid-column:span 2}
+@media(max-width:900px){
+  .t-hero{grid-column:span 4}.t-tall{grid-column:span 4}.t-wide{grid-column:span 4}.t-half{grid-column:span 2}.t-third{grid-column:span 2}
+}
+@media(max-width:600px){
+  .t-hero,.t-tall,.t-wide{grid-column:span 2}.t-half,.t-third{grid-column:span 2}
+}
+
+/* live menu-bar tile */
+.t-hero{background:linear-gradient(160deg,#171b25,#10131b)}
+.mbsim{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;padding:7px 12px;margin-bottom:18px;font-family:var(--mono);font-size:12px;color:var(--soft)}
+.mbsim .sp{margin-left:auto;display:flex;align-items:center;gap:7px}
+.mbsim .ring{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);padding:2px 8px;border-radius:8px;outline:1.5px solid rgba(79,214,230,.5)}
+.mbsim .ring svg{width:16px;height:16px}
+.mbsim .ring b{color:#fff;font-size:11.5px}
+.t-hero .read{margin-top:auto;font-family:var(--mono);font-size:12px;color:var(--soft)}
+
+/* dual ring tile */
+.ringtile{grid-column:span 3;grid-row:span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(120% 90% at 50% 0%,rgba(79,214,230,.08),transparent 70%),var(--tile)}
+.ringtile svg{width:min(74%,230px);height:auto;overflow:visible}
+.rt-track{stroke:rgba(255,255,255,.08)}
+.rnum{font:900 30px var(--sans)}
+.rlbl{font:600 11px var(--sans);fill:var(--soft);text-transform:uppercase;letter-spacing:.1em}
+.ringtile .legend{display:flex;gap:18px;font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:8px}
+.ringtile .legend i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+
+/* color tile */
+.colortile{display:flex;flex-direction:column;justify-content:center}
+.swatches{display:flex;gap:8px;margin-top:12px}
+.sw{flex:1;height:8px;border-radius:6px}
+.threshold{display:flex;align-items:center;gap:10px;margin-top:14px;font-family:var(--mono);font-size:12px;color:var(--soft)}
+
+/* alert tile */
+.alerttile{background:linear-gradient(160deg,rgba(255,69,58,.10),var(--tile))}
+.notif{display:flex;gap:11px;align-items:flex-start;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:14px}
+.notif .ai{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF453A,#FF8A3A);flex:none;display:grid;place-items:center;font-size:15px}
+.notif .nt{font-size:12.5px;line-height:1.4}
+.notif .nt b{display:block;font-size:13px;margin-bottom:1px}
+.notif .nt span{color:var(--soft)}
+
+/* privacy tile */
+.privtile .ic{width:40px;height:40px;border-radius:11px;background:rgba(52,208,88,.12);display:grid;place-items:center;margin-bottom:14px}
+.privtile .ic svg{width:21px;height:21px;stroke:var(--green);stroke-width:1.9;fill:none}
+
+/* stat tiles */
+.stat{display:flex;flex-direction:column;justify-content:center;text-align:center}
+.stat .big{font-weight:900;font-size:clamp(30px,4vw,46px);letter-spacing:-.03em;line-height:1}
+.stat .big.g{background:linear-gradient(120deg,#7df0ff,#34D058);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat small{font-family:var(--mono);font-size:11.5px;color:var(--soft);margin-top:7px;letter-spacing:.04em}
+
+/* free / closing */
+.closing{margin:40px 0 24px;text-align:center;border:1px solid var(--line);border-radius:28px;padding:60px 28px;
+  background:radial-gradient(120% 100% at 50% 0%,rgba(79,214,230,.10),transparent 65%)}
+.closing .price{font-weight:900;font-size:clamp(44px,9vw,108px);letter-spacing:-.04em;line-height:.92}
+.closing .price .g{background:linear-gradient(120deg,#7df0ff,#34D058);-webkit-background-clip:text;background-clip:text;color:transparent}
+.closing p{color:var(--soft);margin:14px auto 28px;max-width:48ch}
+footer{padding:30px 0 54px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--soft)}
+footer a:hover{color:var(--teal)}
+.disc{text-align:center;font-family:var(--mono);font-size:11px;color:#4c5462;padding-bottom:40px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+
+<nav><div class="wrap nav-in">
+  <a class="brand" href="#"><img src="../favicon-192.png?v=2" alt="">tally</a>
+  <a class="dl" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">Download</a>
+</div></nav>
+
+<header class="wrap">
+  <span class="kick"><b>❯</b> macOS menu-bar app · <b>free</b></span>
+  <h1>Your Claude usage,<br><span class="g">in one little grid.</span></h1>
+  <p class="lead">Everything <b>Tally</b> does, laid out the way it actually works — live rings for your <b>session and weekly</b> limits, color warnings, and threshold alerts, all from your menu bar.</p>
+  <div class="cta">
+    <a class="btn" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">
+      <svg viewBox="0 0 24 24"><path d="M17.05 12.04c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.32.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.25 2.74 2.21 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.69.71 2.85.69 1.18-.02 1.92-1.08 2.64-2.14.83-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.5zM14.88 5.39c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.55 1.31-.56.64-1.05 1.67-.92 2.65.97.08 1.96-.49 2.57-1.21z"/></svg>
+      Download for macOS
+    </a>
+    <span class="note">Notarized <span class="ok">✓</span> · ~1 MB · Ventura+</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="bento">
+
+    <!-- live menu bar -->
+    <div class="tile t-hero">
+      <span class="tag">// in your menu bar</span>
+      <h3>Always one glance away</h3>
+      <div class="mbsim">
+        <span>9:41</span>
+        <span class="sp">
+          <span class="ring" title="92% session">
+            <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="4"/><circle id="barArc" cx="18" cy="18" r="14" fill="none" stroke="#FF453A" stroke-width="4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 18 18)"/></svg>
+            <b id="barPct">0%</b>
+          </span>
+          <span>🔋</span><span>📶</span>
+        </span>
+      </div>
+      <p>That little ring is Tally. Outer arc is usage, inner is your 5-hour reset window — colored green → yellow → red as you climb.</p>
+      <span class="read">❯ no clicking required</span>
+    </div>
+
+    <!-- dual ring dashboard -->
+    <div class="tile ringtile">
+      <span class="tag" style="position:absolute;top:18px;left:22px">// the dashboard</span>
+      <svg viewBox="0 0 200 200" id="dashSvg">
+        <g transform="rotate(-90 100 100)" fill="none" stroke-linecap="round">
+          <circle class="rt-track" cx="100" cy="100" r="80" stroke-width="16"/>
+          <circle class="rt-track" cx="100" cy="100" r="56" stroke-width="13"/>
+          <circle id="dSession" cx="100" cy="100" r="80" stroke-width="16" pathLength="100" stroke-dasharray="0 100"/>
+          <circle id="dWeekly" cx="100" cy="100" r="56" stroke-width="13" stroke="#4FD6E6" pathLength="100" stroke-dasharray="0 100"/>
+        </g>
+        <text x="100" y="94" text-anchor="middle" class="rnum" id="dNum">0%</text>
+        <text x="100" y="116" text-anchor="middle" class="rlbl">session</text>
+      </svg>
+      <div class="legend"><span><i style="background:#FF453A"></i>session 92%</span><span><i style="background:#4FD6E6"></i>weekly 10%</span></div>
+    </div>
+
+    <!-- color warning -->
+    <div class="tile t-third colortile">
+      <span class="tag">// warning system</span>
+      <h3>Green → red</h3>
+      <div class="swatches">
+        <span class="sw" style="background:#34D058;box-shadow:0 0 12px #34D05880"></span>
+        <span class="sw" style="background:#FFD60A;box-shadow:0 0 12px #FFD60A80"></span>
+        <span class="sw" style="background:#FF453A;box-shadow:0 0 12px #FF453A80"></span>
+      </div>
+      <p style="margin-top:10px">It warms up as you climb, so you feel the wall coming.</p>
+    </div>
+
+    <!-- alerts -->
+    <div class="tile t-third alerttile">
+      <span class="tag">// alerts</span>
+      <h3>Before the wall</h3>
+      <div class="notif">
+        <span class="ai">⚡</span>
+        <span class="nt"><b>Tally</b><span>Session at 80% — about an hour of headroom left.</span></span>
+      </div>
+    </div>
+
+    <!-- weekly stat -->
+    <div class="tile t-half stat">
+      <div class="big g">2</div>
+      <small>limits tracked<br>session + weekly</small>
+    </div>
+
+    <!-- toggle -->
+    <div class="tile t-half">
+      <span class="tag">// your view</span>
+      <h3>Rings or bars</h3>
+      <p>One toggle flips the whole dashboard between Apple-Watch rings and clean progress bars.</p>
+    </div>
+
+    <!-- privacy -->
+    <div class="tile t-half privtile">
+      <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 2.4v5.3c0 4.3-3 7.5-7 8.7-4-1.2-7-4.4-7-8.7V5.4L12 3z"/><path d="M8.7 12.1l2.3 2.3 4.3-4.5"/></svg></div>
+      <h3>Private &amp; local</h3>
+      <p>Your own Claude login, kept on your Mac. Talks only to claude.ai — no servers, no tracking.</p>
+    </div>
+
+    <!-- size stat -->
+    <div class="tile t-half stat">
+      <div class="big">~1<span style="font-size:.5em"> MB</span></div>
+      <small>and notarized by Apple<br>opens with zero warnings</small>
+    </div>
+
+    <!-- reset countdown -->
+    <div class="tile t-wide" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <div>
+        <span class="tag">// live countdowns</span>
+        <h3 style="margin-top:8px">Always know when you're free again</h3>
+        <p>The inner ring counts down to your reset. Tally checks quietly in the background, about once a minute.</p>
+      </div>
+      <div class="mono" style="margin-left:auto;text-align:right;line-height:2;color:var(--soft);font-size:13px">
+        <div>session · <span style="color:var(--teal)" id="rs1">resets 1h 12m</span></div>
+        <div>weekly · <span style="color:var(--teal)" id="rs2">resets 6d 18h</span></div>
+      </div>
+    </div>
+
+    <!-- price -->
+    <div class="tile t-half stat" style="background:radial-gradient(120% 100% at 50% 0%,rgba(52,208,88,.12),transparent 70%)">
+      <div class="big g">Free</div>
+      <small>forever · every feature</small>
+    </div>
+
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="closing">
+    <div class="price">Free. <span class="g">Forever.</span></div>
+    <p>Every feature, for everyone — no cost, no catch. Drag it to Applications and that ring is yours.</p>
+    <a class="btn" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">Download Tally</a>
+  </div>
+
+  <footer>
+    <span>tally · v1.0.0 · made by <a href="https://github.com/alfital2">TalTools</a></span>
+    <span><a href="https://github.com/alfital2/tally-app/releases/latest">releases</a> · <a href="https://github.com/alfital2/tally-app">github</a> · macOS Ventura+</span>
+  </footer>
+  <p class="disc">Independent project, not affiliated with or endorsed by Anthropic. “Claude” is a trademark of Anthropic.</p>
+</div>
+
+<script>
+  const usageColor=v=>v>=80?'#FF453A':v>=50?'#FFD60A':'#34D058';
+  const ease=t=>1-Math.pow(1-t,3);
+  const dS=document.getElementById('dSession'),dW=document.getElementById('dWeekly'),dN=document.getElementById('dNum');
+  const bA=document.getElementById('barArc'),bP=document.getElementById('barPct');
+  const ST=92,WT=42,BAR=92;
+  function paint(sv,wv,bv){
+    const sc=usageColor(sv);
+    dS.setAttribute('stroke-dasharray',`${sv} 100`);dS.setAttribute('stroke',sc);dS.style.filter=`drop-shadow(0 0 8px ${sc}aa)`;
+    dW.setAttribute('stroke-dasharray',`${wv} 100`);dW.style.filter='drop-shadow(0 0 6px #4FD6E6aa)';
+    dN.textContent=Math.round(sv)+'%';dN.setAttribute('fill',sc);
+    bA.setAttribute('stroke-dasharray',`${bv} 100`);bA.setAttribute('stroke',usageColor(bv));bA.style.filter=`drop-shadow(0 0 3px ${usageColor(bv)})`;bP.textContent=Math.round(bv)+'%';
+  }
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){paint(ST,WT,BAR);}
+  else{const F=2400;let s=null;function f(ts){if(s===null)s=ts;const e=ease(Math.min((ts-s)/F,1));paint(ST*e,WT*e,BAR*e);if((ts-s)<F)requestAnimationFrame(f);}requestAnimationFrame(f);}
+</script>
+</body>
+</html>
