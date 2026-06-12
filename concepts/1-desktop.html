@@ -433,7 +433,7 @@ footer a:hover{color:var(--teal)}
   </div>
 
   <footer>
-    <span>tally · v1.0.0 · made by <a href="https://github.com/alfital2">TalTools</a></span>
+    <span>tally · <span id="ver">v1.1.0</span> · made by <a href="https://github.com/alfital2">TalTools</a></span>
     <span><a href="../terms.html">terms</a> · <a href="https://github.com/alfital2/tally-app/releases/latest">releases</a> · <a href="https://github.com/alfital2/tally-app">github</a></span>
   </footer>
   <p class="disc">Independent project, not affiliated with or endorsed by Anthropic. “Claude” is a trademark of Anthropic.</p>
@@ -610,6 +610,14 @@ footer a:hover{color:var(--teal)}
     setTimeout(termCycle, 700);
     setTimeout(macCycle, 1400);
   }
+</script>
+<script>
+  // Footer version: pull the latest shipped version from the live Sparkle feed.
+  fetch('/appcast.xml').then(r=>r.text()).then(t=>{
+    const m = t.match(/shortVersionString>([^<]+)</);
+    const e = document.getElementById('ver');
+    if (m && e) e.textContent = 'v' + m[1].trim();
+  }).catch(()=>{});
 </script>
 </body>
 </html>

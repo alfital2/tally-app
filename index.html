@@ -258,7 +258,7 @@
 <footer>
   <div class="wrap">
     <div class="foot-in">
-      <span class="foot-brand"><img src="favicon-192.png?v=2" alt="" />tally <span class="ver">v1.0.0</span></span>
+      <span class="foot-brand"><img src="favicon-192.png?v=2" alt="" />tally <span class="ver" id="ver">v1.1.0</span></span>
       <span class="mono">Requires macOS Ventura or later</span>
       <span class="mono"><a href="https://github.com/alfital2/tally-app/releases/latest">releases</a> · made by <a href="https://github.com/alfital2">TalTools</a></span>
     </div>
@@ -321,6 +321,14 @@
     }
     requestAnimationFrame(fill);
   }
+</script>
+<script>
+  // Footer version: pull the latest shipped version from the live Sparkle feed.
+  fetch('/appcast.xml').then(r=>r.text()).then(t=>{
+    const m = t.match(/shortVersionString>([^<]+)</);
+    const e = document.getElementById('ver');
+    if (m && e) e.textContent = 'v' + m[1].trim();
+  }).catch(()=>{});
 </script>
 </body>
 </html>
