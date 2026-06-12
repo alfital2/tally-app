@@ -9,25 +9,23 @@
 <meta property="og:description" content="A tiny macOS menu-bar app that tracks your Claude.ai session + weekly limits as live rings. Free, local, notarized." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://alfital2.github.io/tally-app/" />
-<meta property="og:image" content="https://alfital2.github.io/tally-app/apple-touch-icon.png" />
-<link rel="icon" href="favicon.ico" sizes="any" />
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
-<link rel="apple-touch-icon" href="apple-touch-icon.png" />
-<meta name="theme-color" content="#0A0B0E" />
+<meta property="og:image" content="https://alfital2.github.io/tally-app/apple-touch-icon.png?v=2" />
+<link rel="icon" href="favicon.ico?v=2" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2" />
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2" />
+<meta name="theme-color" content="#13151B" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg:#0A0B0E; --ink:#E8EAEC; --soft:#8A8F99; --card:rgba(255,255,255,.04);
-    --teal:#46D2E6; --teal-d:#1E9AAD; --green:#34D058;
-    --yellow:#FFD60A; --red:#FF453A;
-    --grad:linear-gradient(135deg,#37D6C6,#1E9AAD);
-    --gradtext:linear-gradient(120deg,#5EE0EF,#46D58A);
-    --line:rgba(255,255,255,.08);
+    --bg:#13151B; --panel:#171A22; --ink:#E9EBEE; --soft:#8C92A0; --card:rgba(255,255,255,.05);
+    --teal:#4FD6E6; --teal-d:#1E9AAD; --green:#34D058; --yellow:#FFD60A; --red:#FF453A;
+    --grad:linear-gradient(135deg,#3FD8C9,#1E9AAD);
+    --line:rgba(255,255,255,.09);
     --maxw:1060px; --sans:'Plus Jakarta Sans',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
-    --shadow:0 30px 60px -30px rgba(0,0,0,.75);
+    --shadow:0 28px 56px -30px rgba(0,0,0,.7);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -35,32 +33,30 @@
   a{color:inherit;text-decoration:none}
   ::selection{background:var(--teal);color:#06222a}
 
-  /* faint editor/terminal grid, fading out toward edges */
+  /* faint editor/terminal grid, fading toward the edges */
   .grid{position:fixed;inset:0;z-index:-2;
-    background-image:linear-gradient(rgba(110,200,210,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(110,200,210,.045) 1px,transparent 1px);
-    background-size:40px 40px;
-    -webkit-mask:radial-gradient(120% 90% at 50% 18%,#000 30%,transparent 78%);
-            mask:radial-gradient(120% 90% at 50% 18%,#000 30%,transparent 78%)}
-  .glow{position:fixed;inset:0;z-index:-3;pointer-events:none;background:
-    radial-gradient(50vw 40vw at 50% -8%,rgba(46,210,230,.16),transparent 70%),
-    radial-gradient(40vw 30vw at 85% 8%,rgba(52,208,88,.08),transparent 70%)}
+    background-image:linear-gradient(rgba(120,190,205,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(120,190,205,.05) 1px,transparent 1px);
+    background-size:44px 44px;
+    -webkit-mask:radial-gradient(130% 100% at 50% 12%,#000 38%,transparent 86%);
+            mask:radial-gradient(130% 100% at 50% 12%,#000 38%,transparent 86%)}
+  .glow{position:fixed;inset:0;z-index:-3;pointer-events:none;background:radial-gradient(46vw 30vw at 50% -10%,rgba(79,214,230,.10),transparent 72%)}
 
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px;position:relative}
   .mono{font-family:var(--mono)}
 
   .btn{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15.5px;padding:14px 26px;border:none;
-    background:var(--grad);color:#04231f;cursor:pointer;border-radius:14px;box-shadow:0 16px 34px -12px rgba(46,210,230,.5);
+    background:var(--grad);color:#04231f;cursor:pointer;border-radius:14px;box-shadow:0 16px 32px -14px rgba(63,216,201,.5);
     transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
-  .btn:hover{transform:translateY(-3px);box-shadow:0 24px 46px -14px rgba(46,210,230,.6)}
+  .btn:hover{transform:translateY(-3px);box-shadow:0 24px 44px -16px rgba(63,216,201,.62)}
   .btn .apple{width:15px;height:15px;fill:currentColor}
-  .notarized{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;font-weight:600;color:#46d58a}
+  .notarized{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.03em;font-weight:600;color:#46d58a}
   .notarized svg{width:13px;height:13px}
   .meta{font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;color:var(--soft)}
 
-  .glass{position:relative;background:var(--card);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);
+  .glass{position:relative;background:var(--card);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);
     border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}
 
-  nav{position:sticky;top:0;z-index:50;background:rgba(10,11,14,.66);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:border-color .3s}
+  nav{position:sticky;top:0;z-index:50;background:rgba(19,21,27,.72);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:border-color .3s}
   nav.scrolled{border-bottom-color:var(--line)}
   .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;font-size:19px;letter-spacing:-.01em}
@@ -74,7 +70,7 @@
     padding:7px 14px;border-radius:9px;border:1px solid var(--line);margin-bottom:26px}
   .kick .pr{color:var(--teal);font-weight:700}
   h1{font-weight:800;font-size:clamp(42px,7.2vw,80px);line-height:1.03;letter-spacing:-.035em}
-  h1 .grad{background:var(--gradtext);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h1 .acc{color:var(--teal)}
   .lead{margin:24px auto 0;font-size:clamp(16.5px,2vw,19px);color:var(--soft);max-width:52ch}
   .lead b{color:var(--ink);font-weight:700}
   .cta{margin-top:30px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
@@ -83,21 +79,21 @@
   .rings{margin:52px auto 0;display:flex;justify-content:center;gap:clamp(20px,7vw,84px);flex-wrap:wrap}
   .ringgroup{display:flex;flex-direction:column;align-items:center;gap:14px;width:218px}
   .ringgroup svg{width:198px;height:198px;overflow:visible}
-  .track{stroke:rgba(255,255,255,.08)}
-  .rnum{font:800 42px var(--sans);letter-spacing:-.02em}
-  .rlbl{font:600 15px var(--sans);fill:var(--soft)}
+  .track{stroke:rgba(255,255,255,.09)}
+  .rnum{font:800 34px var(--sans);letter-spacing:-.02em}
+  .rlbl{font:600 14px var(--sans);fill:var(--soft)}
   .rreset{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--soft)}
   .rreset .tdot{width:8px;height:8px;border-radius:50%;background:var(--teal)}
 
-  section{padding:70px 0}
-  .sec-head{text-align:center;max-width:620px;margin:0 auto 42px}
-  .sec-head .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:block}
-  .sec-head h2{font-weight:800;font-size:clamp(30px,4.6vw,46px);line-height:1.06;letter-spacing:-.025em}
+  section{padding:68px 0}
+  .sec-head{text-align:center;max-width:620px;margin:0 auto 40px}
+  .sec-head .n{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--teal);margin-bottom:12px;display:block}
+  .sec-head h2{font-weight:800;font-size:clamp(28px,4.4vw,44px);line-height:1.07;letter-spacing:-.025em}
 
   .grid-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
   @media(max-width:720px){.grid-cards{grid-template-columns:1fr}}
   .fcard{padding:26px}
-  .fcard .ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:15px;background:rgba(46,210,230,.12);border:1px solid var(--line)}
+  .fcard .ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:15px;background:rgba(79,214,230,.12);border:1px solid var(--line)}
   .fcard .ico svg{width:23px;height:23px;stroke:var(--teal);stroke-width:1.9;fill:none}
   .fcard h3{font-weight:800;font-size:19px;letter-spacing:-.01em;margin-bottom:6px}
   .fcard p{font-size:14.5px;color:var(--soft)}
@@ -106,23 +102,34 @@
   @media(max-width:720px){.steps{grid-template-columns:1fr}}
   .step{padding:24px}
   .step .cmd{font-family:var(--mono);font-size:12px;color:var(--teal);margin-bottom:12px}
-  .step .cmd .pr{opacity:.7}
+  .step .cmd .pr{opacity:.65}
   .step h3{font-weight:800;font-size:17px;margin-bottom:6px}
   .step p{font-size:14px;color:var(--soft)}
 
-  .final{position:relative;text-align:center;padding:60px 26px;border-radius:24px;overflow:hidden;
-    background:linear-gradient(135deg,#1FA6BB,#2E9E6E);box-shadow:0 40px 80px -34px rgba(31,166,187,.6)}
-  .final::before{content:"";position:absolute;top:-70px;right:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.14)}
+  /* pricing / free */
+  #free{text-align:center}
+  #free .big{font-weight:800;font-size:clamp(46px,8.5vw,104px);letter-spacing:-.03em;line-height:.96}
+  #free .big .acc{color:var(--teal)}
+  .free-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;text-align:left}
+  @media(max-width:720px){.free-grid{grid-template-columns:1fr}}
+  .free-col{padding:24px}
+  .free-col h3{font-weight:800;font-size:17px;margin-bottom:7px}
+  .free-col p{font-size:14px;color:var(--soft)}
+
+  .final{position:relative;text-align:center;padding:58px 26px;border-radius:24px;overflow:hidden;
+    background:linear-gradient(135deg,#1FA6BB,#2E9E6E);box-shadow:0 40px 80px -36px rgba(31,166,187,.55)}
+  .final::before{content:"";position:absolute;top:-70px;right:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.13)}
   .final h2{font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.04;letter-spacing:-.02em;margin-bottom:12px;position:relative;z-index:1;color:#fff}
   .final p{font-size:16px;margin-bottom:24px;color:rgba(255,255,255,.92);position:relative;z-index:1}
-  .final .btn{background:#fff;color:#157;position:relative;z-index:1;box-shadow:0 18px 40px -14px rgba(0,0,0,.4)}
+  .final .btn{background:#fff;color:#137;position:relative;z-index:1;box-shadow:0 18px 40px -14px rgba(0,0,0,.4)}
 
   footer{padding:38px 0 50px}
-  .foot-in{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--soft)}
+  .foot-in{display:flex;align-items:center;justify-content:space-between;gap:14px 26px;flex-wrap:wrap;font-size:13px;color:var(--soft)}
   .foot-brand{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-weight:700;font-size:15px;color:var(--ink)}
   .foot-brand img{width:23px;height:23px;border-radius:7px}
+  .foot-brand .ver{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--soft)}
   .foot-in a:hover{color:var(--teal)}
-  .disclaim{margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--soft);opacity:.7;text-align:center}
+  .disclaim{margin-top:16px;font-family:var(--mono);font-size:11.5px;color:var(--soft);opacity:.65;text-align:center}
 </style>
 </head>
 <body>
@@ -131,7 +138,7 @@
 
 <nav id="nav">
   <div class="wrap nav-in">
-    <a class="brand" href="#top"><img src="favicon-192.png" alt="" />tally<span class="cur"></span></a>
+    <a class="brand" href="#top"><img src="favicon-192.png?v=2" alt="" />tally<span class="cur"></span></a>
     <a class="btn nav-cta" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">Download</a>
   </div>
 </nav>
@@ -139,14 +146,14 @@
 <header id="top">
   <div class="wrap">
     <span class="kick"><span class="pr">❯</span> macOS menu-bar app · free</span>
-    <h1>Your Claude usage,<br><span class="grad">at a glance.</span></h1>
+    <h1>Your Claude usage,<br><span class="acc">at a glance.</span></h1>
     <p class="lead">Tally lives in your menu bar and tracks your Claude.ai <b>session and weekly limits</b> in real time — as Apple-Watch-style rings that turn from green to red as you climb. Never hit a wall mid-thought.</p>
     <div class="cta">
       <a class="btn" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">
         <svg class="apple" viewBox="0 0 24 24"><path d="M17.05 12.04c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.32.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.25 2.74 2.21 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.69.71 2.85.69 1.18-.02 1.92-1.08 2.64-2.14.83-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.5zM14.88 5.39c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.55 1.31-.56.64-1.05 1.67-.92 2.65.97.08 1.96-.49 2.57-1.21z"/></svg>
         Download for macOS
       </a>
-      <span class="meta">macOS 13+ · Pro / Max</span>
+      <span class="meta">macOS Ventura &amp; later</span>
       <span class="notarized" title="Signed & notarized by Apple — opens with no warnings">
         <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 2.4v5.3c0 4.3-3 7.5-7 8.7-4-1.2-7-4.4-7-8.7V5.4L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.7 12.1l2.3 2.3 4.3-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Notarized
@@ -160,10 +167,10 @@
             <circle class="track" cx="100" cy="100" r="84" stroke-width="14"/>
             <circle class="track" cx="100" cy="100" r="62" stroke-width="11"/>
             <circle class="usage-arc" cx="100" cy="100" r="84" stroke-width="14" pathLength="100" stroke-dasharray="0 100"/>
-            <circle class="reset-arc" cx="100" cy="100" r="62" stroke-width="11" pathLength="100" stroke-dasharray="0 100" stroke="#46D2E6"/>
+            <circle class="reset-arc" cx="100" cy="100" r="62" stroke-width="11" pathLength="100" stroke-dasharray="0 100" stroke="#4FD6E6"/>
           </g>
-          <text x="100" y="96" text-anchor="middle" class="rnum">0%</text>
-          <text x="100" y="120" text-anchor="middle" class="rlbl">session</text>
+          <text x="100" y="95" text-anchor="middle" class="rnum">0%</text>
+          <text x="100" y="118" text-anchor="middle" class="rlbl">session</text>
         </svg>
         <span class="rreset"><span class="tdot"></span><span class="rreset-t">Resets in 1h 12m</span></span>
       </div>
@@ -173,10 +180,10 @@
             <circle class="track" cx="100" cy="100" r="84" stroke-width="14"/>
             <circle class="track" cx="100" cy="100" r="62" stroke-width="11"/>
             <circle class="usage-arc" cx="100" cy="100" r="84" stroke-width="14" pathLength="100" stroke-dasharray="0 100"/>
-            <circle class="reset-arc" cx="100" cy="100" r="62" stroke-width="11" pathLength="100" stroke-dasharray="0 100" stroke="#46D2E6"/>
+            <circle class="reset-arc" cx="100" cy="100" r="62" stroke-width="11" pathLength="100" stroke-dasharray="0 100" stroke="#4FD6E6"/>
           </g>
-          <text x="100" y="96" text-anchor="middle" class="rnum">0%</text>
-          <text x="100" y="120" text-anchor="middle" class="rlbl">weekly</text>
+          <text x="100" y="95" text-anchor="middle" class="rnum">0%</text>
+          <text x="100" y="118" text-anchor="middle" class="rlbl">weekly</text>
         </svg>
         <span class="rreset"><span class="tdot"></span><span class="rreset-t">Resets in 6d 18h</span></span>
       </div>
@@ -186,7 +193,7 @@
 
 <section id="features">
   <div class="wrap">
-    <div class="sec-head"><span class="n">// what it does</span><h2>Everything, nothing more.</h2></div>
+    <div class="sec-head"><span class="n">// what it does</span><h2>A few useful things.</h2></div>
     <div class="grid-cards">
       <div class="fcard glass">
         <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 7 4"/></svg></div>
@@ -206,7 +213,7 @@
       <div class="fcard glass">
         <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l7 2.4v5.3c0 4.3-3 7.5-7 8.7-4-1.2-7-4.4-7-8.7V5.4L12 3z"/></svg></div>
         <h3>Private &amp; local</h3>
-        <p>Tally uses your own Claude login, stays on your Mac, and talks only to claude.ai — no account, no servers, no tracking.</p>
+        <p>Tally uses your own Claude login, stays on your Mac, and talks only to claude.ai — no servers, no tracking, nothing leaves your machine.</p>
       </div>
     </div>
   </div>
@@ -219,6 +226,18 @@
       <div class="step glass"><div class="cmd"><span class="pr">❯</span> sign in</div><h3>Once</h3><p>Log in to Claude in Tally's built-in window — the same login you already use.</p></div>
       <div class="step glass"><div class="cmd"><span class="pr">❯</span> watch</div><h3>Every minute</h3><p>Tally checks your session &amp; weekly limits quietly in the background.</p></div>
       <div class="step glass"><div class="cmd"><span class="pr">❯</span> glance</div><h3>Any time</h3><p>See the ring in your menu bar; click for the full dashboard.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="free" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:18px"><span class="n">// pricing</span></div>
+    <div class="big">Free. <span class="acc">Forever.</span></div>
+    <div class="free-grid">
+      <div class="free-col glass"><h3>100% free</h3><p>Download it, use it, keep it. Every feature is included for everyone — no cost, no catch.</p></div>
+      <div class="free-col glass"><h3>The “7-day trial”</h3><p>A friendly joke: after a week, Tally may gently ask whether you'd like to chip in. It never stops working, and nothing is taken away.</p></div>
+      <div class="free-col glass"><h3>Support, if you like</h3><p>If Tally saves you from a few surprise cut-offs, you can support the project. Completely optional — it's fully yours either way. 💙</p></div>
     </div>
   </div>
 </section>
@@ -239,7 +258,8 @@
 <footer>
   <div class="wrap">
     <div class="foot-in">
-      <span class="foot-brand"><img src="favicon-192.png" alt="" />tally</span>
+      <span class="foot-brand"><img src="favicon-192.png?v=2" alt="" />tally <span class="ver">v1.0.0</span></span>
+      <span class="mono">Requires macOS Ventura or later</span>
       <span class="mono"><a href="https://github.com/alfital2/tally-app/releases/latest">releases</a> · made by <a href="https://github.com/alfital2">alfital2</a></span>
     </div>
     <p class="disclaim">Tally is an independent project, not affiliated with or endorsed by Anthropic. "Claude" is a trademark of Anthropic.</p>
@@ -250,7 +270,6 @@
   const nav = document.getElementById('nav');
   addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), {passive:true});
 
-  // colour by the same thresholds the app uses: green < 50, yellow 50–80, red ≥ 80
   const usageColor = v => v >= 80 ? '#FF453A' : v >= 50 ? '#FFD60A' : '#34D058';
   const clamp01 = x => Math.max(0, Math.min(1, x));
   const ease = t => 1 - Math.pow(1 - t, 3);
@@ -265,13 +284,10 @@
 
   const now = () => Date.now();
   const groups = [...document.querySelectorAll('.ringgroup')].map(el => ({
-    target: +el.dataset.target,
-    win:    +el.dataset.winSec * 1000,
+    target: +el.dataset.target, win: +el.dataset.winSec * 1000,
     resetAt: now() + (+el.dataset.resetSec * 1000),
-    usage: el.querySelector('.usage-arc'),
-    rst:   el.querySelector('.reset-arc'),
-    num:   el.querySelector('.rnum'),
-    txt:   el.querySelector('.rreset-t'),
+    usage: el.querySelector('.usage-arc'), rst: el.querySelector('.reset-arc'),
+    num: el.querySelector('.rnum'), txt: el.querySelector('.rreset-t'),
   }));
 
   function paintUsage(g, v){
@@ -283,32 +299,25 @@
     g.num.setAttribute('fill', c);
   }
   function paintReset(g, frac){
-    const a = frac > 0 ? Math.max(frac * 100, 2) : 0;
-    g.rst.setAttribute('stroke-dasharray', `${a} 100`);
-    g.rst.style.filter = 'drop-shadow(0 0 6px rgba(70,210,230,.8))';
+    g.rst.setAttribute('stroke-dasharray', `${frac > 0 ? Math.max(frac*100, 2) : 0} 100`);
+    g.rst.style.filter = 'drop-shadow(0 0 6px rgba(79,214,230,.8))';
   }
   const innerFrac = g => clamp01(1 - (g.resetAt - now()) / g.win);
 
   function tick(){
-    groups.forEach(g => {
-      g.txt.textContent = fmtReset(g.resetAt - now());
-      paintReset(g, innerFrac(g));   // usage stays; reset ring creeps with the countdown
-    });
+    groups.forEach(g => { g.txt.textContent = fmtReset(g.resetAt - now()); paintReset(g, innerFrac(g)); });
     setTimeout(tick, 1000);
   }
 
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) {
-    groups.forEach(g => { paintUsage(g, g.target); });
-    tick();
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches){
+    groups.forEach(g => paintUsage(g, g.target)); tick();
   } else {
     const FILL = 2500; let start = null;
     function fill(ts){
       if (start === null) start = ts;
       const e = ease(Math.min((ts - start) / FILL, 1));
       groups.forEach(g => { paintUsage(g, g.target * e); paintReset(g, innerFrac(g) * e); });
-      if ((ts - start) < FILL) requestAnimationFrame(fill);
-      else tick();   // animation runs ONCE, then the live countdown takes over
+      if ((ts - start) < FILL) requestAnimationFrame(fill); else tick();   // runs once, then live countdown
     }
     requestAnimationFrame(fill);
   }
