@@ -62,11 +62,13 @@ a{color:inherit;text-decoration:none}
 @keyframes ping{0%{transform:scale(.9);opacity:.7}70%,100%{transform:scale(1.25);opacity:0}}
 
 /* ---------- the Tally dropdown (matches the app) ---------- */
-.drop{position:relative;z-index:31;margin:16px auto 0;width:min(326px,92vw);
+.drop{position:absolute;z-index:31;top:38px;right:18px;width:min(300px,calc(100vw - 32px));
   background:rgba(18,21,28,.9);backdrop-filter:blur(30px) saturate(160%);-webkit-backdrop-filter:blur(30px) saturate(160%);
   border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:16px 14px 12px;
-  box-shadow:0 40px 80px -30px rgba(0,0,0,.7);color:#e9edf2}
-.drop::before{content:"";display:none;position:absolute;top:-7px;right:42px;width:14px;height:14px;background:inherit;border-left:1px solid rgba(255,255,255,.12);border-top:1px solid rgba(255,255,255,.12);transform:rotate(45deg)}
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.7);color:#e9edf2;
+  animation:dropIn .7s cubic-bezier(.2,.9,.2,1) .45s both}
+.drop::before{content:"";position:absolute;top:-7px;left:var(--ax,42px);width:14px;height:14px;background:inherit;border-left:1px solid rgba(255,255,255,.12);border-top:1px solid rgba(255,255,255,.12);transform:rotate(45deg)}
+@keyframes dropIn{from{opacity:0;transform:translateY(-14px) scale(.96)}to{opacity:1;transform:none}}
 .drop h4{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:2px 4px 14px}
 .drop .rings{display:flex;gap:10px;justify-content:center;margin-bottom:12px}
 .dr{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1}
@@ -174,11 +176,6 @@ a{color:inherit;text-decoration:none}
 
 /* ===== DESKTOP: hero top-left · Tally panel top-right · windows along the bottom ===== */
 @media(min-width:1100px){
-  .drop{position:absolute;top:38px;right:18px;left:auto;margin:0;width:300px;
-    animation:dropIn .7s cubic-bezier(.2,.9,.2,1) .45s both}
-  .drop::before{display:block}
-  @keyframes dropIn{from{opacity:0;transform:translateY(-14px) scale(.96)}to{opacity:1;transform:none}}
-
   .stage{display:grid;max-width:1480px;margin:0 auto;
     grid-template-columns:1.05fr .95fr;grid-template-areas:"hero side" "work work";
     align-content:center;gap:5vh 4vw;padding:5vh 5vw 13vh;min-height:calc(100svh - 30px)}
@@ -206,6 +203,16 @@ a{color:inherit;text-decoration:none}
 /* ---- mobile only: a compact "sources" strip replaces the windows + dock ---- */
 .sources{display:none}
 .srccap{display:none}
+.menusep{display:none}
+/* FlicKey-style sticky top nav, shown only on narrow widths */
+.topnav{display:none;align-items:center;justify-content:space-between;height:58px;padding:0 18px;
+  position:sticky;top:0;z-index:60;
+  background:rgba(11,18,30,.55);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-bottom:1px solid rgba(255,255,255,.08)}
+.tn-brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;font-size:19px;letter-spacing:-.01em;color:#fff}
+.tn-brand img{width:30px;height:30px;border-radius:9px}
+.tn-dl{padding:11px 20px;border-radius:12px;font-weight:700;font-size:14.5px;background:linear-gradient(135deg,#3FD8C9,#1E9AAD);color:#04231f;transition:transform .2s}
+.tn-dl:hover{transform:translateY(-2px)}
 .src{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;color:#dfe7f0;
   background:rgba(255,255,255,.05);border:1px solid var(--line);padding:9px 13px;border-radius:999px;
   transition:border-color .25s,background .25s,box-shadow .25s,transform .25s}
@@ -215,9 +222,21 @@ a{color:inherit;text-decoration:none}
 @media(max-width:1099px){
   .win{display:none}
   .dock{display:none}
-  .workspace{margin-top:14px;gap:14px}
+  .workspace{display:none}
+  .scene{min-height:auto}                       /* don't stretch to full height on narrow */
+  .topnav{display:flex}
+  /* lower width: hero on top, then a labeled menu-bar demo + its hanging panel, then the strip */
+  .stage{order:1;flex:none;padding:18px 5vw 34px}  /* flex:none stops the hero growing to fill the page (the big gap) */
+  .menusep{display:flex;align-items:center;gap:14px;order:2;margin:0 16px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(233,237,242,.4)}
+  .menusep::before,.menusep::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.13)}
+  .menubar{order:3}
+  /* centered panel, but wide enough that the menu-bar ring stays within its span
+     so the JS-placed arrow always lands on the ring (see placeArrow) */
+  .drop{order:4;position:static;width:min(92vw, max(360px, calc(100vw - 480px)));margin:6px auto 0}
+  .srcblock{order:5;margin-top:30px;padding-bottom:32px}
   .srccap{display:block;text-align:center;font-family:var(--mono);font-size:12px;line-height:1.5;color:rgba(233,237,242,.72);max-width:32ch;margin:0 auto}
-  .sources{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:6px}
+  .sources{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
 }
 
 /* ---------- content below the fold ---------- */
@@ -250,10 +269,17 @@ footer a:hover{color:var(--teal)}
 </head>
 <body>
 
-<section class="scene">
+<!-- narrow-width top nav (FlicKey-style); hidden on desktop, which shows the menu-bar sim instead -->
+<nav class="topnav">
+  <a class="tn-brand" href="#top"><img src="favicon-192.png?v=2" alt="" />tally</a>
+  <a class="tn-dl" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">Download</a>
+</nav>
+
+<section class="scene" id="top">
   <div class="stars"></div>
 
   <!-- the menu bar -->
+  <div class="menusep"><span>live demo · your menu bar</span></div>
   <div class="menubar">
     <span class="logo"></span>
     <span class="mi">Claude</span>
@@ -312,7 +338,7 @@ footer a:hover{color:var(--teal)}
     <!-- hero copy -->
     <div class="hero">
       <h1>Wherever Claude runs,<br><span class="g">your limit's one glance away.</span></h1>
-<p><b>Tally</b> tracks your Claude usage limit in real time - no matter where you're using it: <b>web</b>, <b>Claude Code</b>,a <b>Mac app</b>, or a script running overnight. Always visible in your menu bar.</p>      <div class="row">
+<p><b>Tally</b> tracks your Claude usage limit in real time - no matter where you're using it: <b>web</b>, <b>Claude Code</b>, a <b>Mac app</b>, or a script running overnight. Always visible in your menu bar.</p>      <div class="row">
         <a class="btn" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">
           <svg viewBox="0 0 24 24"><path d="M17.05 12.04c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.32.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.25 2.74 2.21 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.69.71 2.85.69 1.18-.02 1.92-1.08 2.64-2.14.83-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.5zM14.88 5.39c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.55 1.31-.56.64-1.05 1.67-.92 2.65.97.08 1.96-.49 2.57-1.21z"/></svg>
           Download for macOS
@@ -375,14 +401,16 @@ footer a:hover{color:var(--teal)}
         </div>
       </div>
 
-      <!-- mobile only: compact strip that demonstrates "every Claude → one limit" without the heavy windows -->
-      <p class="srccap">One limit — fed by every Claude you run ↑</p>
-      <div class="sources" aria-hidden="true">
-        <div class="src" title="Claude on the web"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"/></svg>Web</div>
-        <div class="src" title="Claude Code in the terminal"><svg viewBox="0 0 24 24"><path d="M6 8l4 4-4 4"/><path d="M13 16h5"/></svg>Claude Code</div>
-        <div class="src" title="The Claude Mac app"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg>Mac app</div>
-      </div>
+    </div>
+  </div>
 
+  <!-- shown only on narrow widths (below the hero + panel) -->
+  <div class="srcblock">
+    <p class="srccap">One limit — fed by every Claude you run ↑</p>
+    <div class="sources" aria-hidden="true">
+      <div class="src" title="Claude on the web"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"/></svg>Web</div>
+      <div class="src" title="Claude Code in the terminal"><svg viewBox="0 0 24 24"><path d="M6 8l4 4-4 4"/><path d="M13 16h5"/></svg>Claude Code</div>
+      <div class="src" title="The Claude Mac app"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg>Mac app</div>
     </div>
   </div>
 
@@ -621,7 +649,6 @@ footer a:hover{color:var(--teal)}
     const hot = session>=78;
     sTarget = Math.min(sTarget+amt, SCAP);
     wTarget = Math.min(wTarget+amt*0.04, 14);
-    fly(el, amt, hot);
     pingRing();
     el.classList.add('on');
     setTimeout(()=>el.classList.remove('on'), 650);
@@ -662,6 +689,19 @@ footer a:hover{color:var(--teal)}
       setTimeout(macCycle, 1400);
     }
   }
+
+  // Keep the panel's little arrow pointing at the menu-bar Tally ring, at every width.
+  function placeArrow(){
+    const drop=document.querySelector('.drop'), ring=document.querySelector('.barTally');
+    if(!drop||!ring) return;
+    const d=drop.getBoundingClientRect(), r=ring.getBoundingClientRect();
+    let ax=(r.left + r.width/2) - d.left - 7;
+    ax=Math.max(12, Math.min(d.width-26, ax));
+    drop.style.setProperty('--ax', ax+'px');
+  }
+  addEventListener('resize', placeArrow, {passive:true});
+  addEventListener('load', placeArrow);
+  placeArrow(); setTimeout(placeArrow, 1300);
 </script>
 <script>
   // Footer version: pull the latest shipped version from the live Sparkle feed.
