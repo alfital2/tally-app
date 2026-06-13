@@ -74,7 +74,7 @@ a{color:inherit;text-decoration:none}
 .dr .t{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#c2c9d6}
 .dr .t .tdot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 7px var(--teal)}
 .drtrack{stroke:rgba(255,255,255,.12)}
-.drnum{font:800 23px var(--sans)}
+.drnum{font:800 18px var(--sans)}
 .drlbl{font:600 9px var(--sans);fill:#9aa3b2;text-transform:uppercase;letter-spacing:.08em}
 .drplan{font-family:var(--mono);font-size:11px;color:#8b93a4;margin:8px 5px 4px;text-align:center}
 
@@ -202,6 +202,23 @@ a{color:inherit;text-decoration:none}
 .dock .app.open::after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
   width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.72)}
 @media(max-width:1099px){.scrollcue{display:none}.dock{position:static;transform:none;margin:30px auto 22px;width:max-content}}
+
+/* ---- mobile only: a compact "sources" strip replaces the windows + dock ---- */
+.sources{display:none}
+.srccap{display:none}
+.src{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;color:#dfe7f0;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);padding:9px 13px;border-radius:999px;
+  transition:border-color .25s,background .25s,box-shadow .25s,transform .25s}
+.src svg{width:15px;height:15px;stroke:#9aa3b2;stroke-width:1.8;fill:none;flex:none}
+.src.on{border-color:rgba(79,214,230,.55);background:rgba(79,214,230,.12);box-shadow:0 0 22px -4px rgba(79,214,230,.55);transform:translateY(-2px)}
+.src.on svg{stroke:var(--teal)}
+@media(max-width:1099px){
+  .win{display:none}
+  .dock{display:none}
+  .workspace{margin-top:14px;gap:14px}
+  .srccap{display:block;text-align:center;font-family:var(--mono);font-size:12px;line-height:1.5;color:rgba(233,237,242,.72);max-width:32ch;margin:0 auto}
+  .sources{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:6px}
+}
 
 /* ---------- content below the fold ---------- */
 .below{background:#0b0d12;color:#e9edf2;padding:96px 7vw 30px}
@@ -356,6 +373,14 @@ footer a:hover{color:var(--teal)}
             <div class="msg ai"><div class="ava">✳</div><div class="bub"><span id="macAI"></span><span class="typing off" id="macTyping"><i></i><i></i><i></i></span></div></div>
           </div>
         </div>
+      </div>
+
+      <!-- mobile only: compact strip that demonstrates "every Claude → one limit" without the heavy windows -->
+      <p class="srccap">One limit — fed by every Claude you run ↑</p>
+      <div class="sources" aria-hidden="true">
+        <div class="src" title="Claude on the web"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"/></svg>Web</div>
+        <div class="src" title="Claude Code in the terminal"><svg viewBox="0 0 24 24"><path d="M6 8l4 4-4 4"/><path d="M13 16h5"/></svg>Claude Code</div>
+        <div class="src" title="The Claude Mac app"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg>Mac app</div>
       </div>
 
     </div>
@@ -591,8 +616,30 @@ footer a:hover{color:var(--teal)}
     }, 1600);
   }
 
+  // -- mobile: cycle the source pills, each feeding the same shared usage ring --
+  function srcTick(el, amt){
+    const hot = session>=78;
+    sTarget = Math.min(sTarget+amt, SCAP);
+    wTarget = Math.min(wTarget+amt*0.04, 14);
+    fly(el, amt, hot);
+    pingRing();
+    el.classList.add('on');
+    setTimeout(()=>el.classList.remove('on'), 650);
+  }
+  function runSources(){
+    const pills = [...document.querySelectorAll('.src')];
+    if(!pills.length) return;
+    let i=0;
+    (function step(){
+      srcTick(pills[i % pills.length], rnd(.3,.6));
+      i++;
+      setTimeout(step, 1500);
+    })();
+  }
+
   /* ---------- boot ---------- */
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mobile=matchMedia('(max-width:1099px)').matches;
   if(reduce){
     session=30; sTarget=30; weekly=13; wTarget=13;
     safUser.textContent=safScript[0].q; safAI.textContent=safScript[0].a; safCaret.classList.add('off');
@@ -606,9 +653,14 @@ footer a:hover{color:var(--teal)}
       paintAll();
       requestAnimationFrame(frame);
     })();
-    safCycle();
-    setTimeout(termCycle, 700);
-    setTimeout(macCycle, 1400);
+    if (mobile) {
+      // phones: the windows are hidden — drive the rings from the source strip instead
+      runSources();
+    } else {
+      safCycle();
+      setTimeout(termCycle, 700);
+      setTimeout(macCycle, 1400);
+    }
   }
 </script>
 <script>
