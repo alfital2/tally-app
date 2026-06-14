@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tally · Privacy Policy</title>
+<meta name="description" content="Privacy Policy for Tally, a macOS menu-bar app that tracks your Claude.ai session and weekly usage. Tally does not collect or sell your data." />
+<meta name="robots" content="all" />
+<link rel="icon" href="favicon.ico?v=2" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2" />
+<meta name="theme-color" content="#13151B" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#13151B; --panel:#171A22; --ink:#E9EBEE; --soft:#8C92A0; --faint:#646b79;
+    --card:rgba(255,255,255,.05); --line:rgba(255,255,255,.09);
+    --teal:#4FD6E6; --teal-d:#1E9AAD; --green:#34D058;
+    --grad:linear-gradient(135deg,#3FD8C9,#1E9AAD);
+    --sans:'Plus Jakarta Sans',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--teal);color:#06222a}
+  a{color:var(--teal)}a:hover{color:#7df0ff}
+  .glow{position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(46vw 30vw at 50% -10%,rgba(79,214,230,.10),transparent 72%)}
+  .grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-image:linear-gradient(rgba(120,190,205,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(120,190,205,.05) 1px,transparent 1px);
+    background-size:44px 44px;
+    -webkit-mask:radial-gradient(130% 100% at 50% 8%,#000 36%,transparent 84%);mask:radial-gradient(130% 100% at 50% 8%,#000 36%,transparent 84%)}
+  .wrap{max-width:780px;margin:0 auto;padding:0 26px;position:relative;z-index:1}
+
+  header{position:sticky;top:0;z-index:5;background:rgba(19,21,27,.72);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;font-size:19px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .brand img{width:27px;height:27px;border-radius:8px}
+  .nav a.back{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);text-decoration:none}
+  .nav a.back:hover{color:var(--ink)}
+
+  main{padding:56px 0 80px}
+  h1{font-weight:800;font-size:clamp(34px,6vw,54px);line-height:1.04;letter-spacing:-.03em;margin-bottom:10px}
+  h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .updated{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:36px}
+  h2{font-weight:800;font-size:22px;margin:38px 0 10px;letter-spacing:-.01em}
+  p{color:var(--soft);margin-bottom:14px}
+  ul{margin:0 0 14px 22px;color:var(--soft)}
+  li{margin-bottom:7px}
+  b{font-weight:700;color:var(--ink)}
+  .lead{font-size:18px;color:var(--ink);margin-bottom:8px}
+  .box{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin:22px 0;
+    box-shadow:0 24px 50px -34px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.04)}
+  .box h3{font-weight:800;font-size:18px;margin-bottom:6px;color:var(--ink)}
+  code{font-family:var(--mono);font-size:13px;background:rgba(255,255,255,.06);border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:var(--ink)}
+  .note{font-size:13px;color:var(--faint);font-style:italic}
+  footer{border-top:1px solid var(--line);padding:26px 0;font-family:var(--mono);font-size:12px;color:var(--faint)}
+  footer a{color:var(--soft)}
+  .disclaim{margin-top:10px;font-size:11.5px;color:var(--faint);opacity:.8}
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+<div class="grid-bg" aria-hidden="true"></div>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="favicon-192.png?v=2" alt="" />tally</a>
+    <a class="back" href="/">← Back to site</a>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <h1>Privacy <span class="grad">Policy</span></h1>
+  <div class="updated">Last updated: 14 June 2026</div>
+
+  <p class="lead">Tally is built to be private by design. It runs on your Mac, uses your own Claude.ai login, and does not collect, transmit, or sell your personal data.</p>
+  <p>This Privacy Policy explains what information the Tally application ("Tally", "the app") handles and how. The app is provided by <b>Tal&nbsp;Alfi (TalTools)</b> ("we", "us"). Tally is an independent project and is not affiliated with, sponsored by, or endorsed by Anthropic. "Claude" is a trademark of Anthropic.</p>
+
+  <div class="box">
+    <h3>The short version</h3>
+    <p style="margin:0">Tally does not have a server, an account system, or analytics. Your Claude.ai session stays on your Mac in the macOS Keychain. We never see your prompts, conversations, usage figures, or login. There is nothing for us to collect, because nothing is sent to us.</p>
+  </div>
+
+  <h2>1. Information stored on your device</h2>
+  <p>Everything Tally needs lives locally on your Mac and never leaves it except to talk to the services described in section 2:</p>
+  <ul>
+    <li><b>Your Claude.ai session.</b> When you sign in, Tally captures your Claude.ai session cookie and organization identifier so it can read your usage. These are stored securely in the <b>macOS Keychain</b> on your device. They are never transmitted to us or any third party other than claude.ai itself.</li>
+    <li><b>App preferences.</b> Small settings such as your alert thresholds, refresh interval, ring/bar display choice, and launch-at-login preference are stored in standard macOS user defaults on your device.</li>
+  </ul>
+  <p>We do not have access to any of this. Deleting the app and signing out removes the session from your Keychain.</p>
+
+  <h2>2. Network connections</h2>
+  <p>Tally makes only the outbound connections required to do its job:</p>
+  <ul>
+    <li><b>claude.ai</b> — Tally signs in with your own Claude.ai account and reads your session and weekly usage from Claude.ai's usage endpoint. This is the same data the Claude.ai web app shows you. Tally does not read, store, or transmit your prompts, conversations, or any other account content.</li>
+    <li><b>GitHub</b> — outside the Mac App Store, the app checks GitHub for new versions to power in-app updates. The Mac App Store edition relies on the App Store for updates instead.</li>
+  </ul>
+  <p>Tally does not contact any analytics, advertising, tracking, or telemetry service. It has no such code.</p>
+
+  <h2>3. What we do not collect</h2>
+  <ul>
+    <li>We do not collect your name, email, or contact details through the app.</li>
+    <li>We do not collect, see, or store your Claude.ai prompts, conversations, or account content.</li>
+    <li>We do not use analytics, tracking, advertising identifiers, or cookies on the app.</li>
+    <li>We do not sell or share any personal data, because we do not collect any.</li>
+  </ul>
+
+  <h2>4. Purchases (optional Supporter License)</h2>
+  <p>Tally is free. If you choose to buy the optional <b>Supporter License</b> from our website, that purchase is processed by our authorized reseller and Merchant of Record, <b>Lemon Squeezy</b> (Lemon Squeezy, LLC), who handle your name, email, and payment details under <a href="https://www.lemonsqueezy.com/privacy" target="_blank" rel="noopener">their own privacy policy</a>. License validation contacts Lemon Squeezy only to confirm whether a key is valid. If you purchase through the Mac App Store instead, the transaction is handled by Apple under Apple's privacy policy. We never receive your full payment details.</p>
+
+  <h2>5. Children's privacy</h2>
+  <p>Tally is a general-audience productivity utility and is not directed at children under 13. We do not knowingly collect personal information from children.</p>
+
+  <h2>6. Data retention &amp; your control</h2>
+  <p>Because data stays on your device, you are in control of it at all times. You can clear Tally's stored session by signing out in the app, and remove all local data by deleting the app. For any purchase data held by Lemon Squeezy or Apple, contact us and we will help you exercise the rights available to you under applicable law.</p>
+
+  <h2>7. Changes to this policy</h2>
+  <p>We may update this Privacy Policy from time to time. The current version is always available at this page, with the "Last updated" date above.</p>
+
+  <h2>8. Contact</h2>
+  <p>Questions about this Privacy Policy or your data: <a href="mailto:ardour.isolate3@icloud.com">ardour.isolate3@icloud.com</a>.</p>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">Tally · made by <a href="https://github.com/alfital2">TalTools</a> · <a href="/">tallyrate.site</a>
+    <div class="disclaim">Independent project, not affiliated with or endorsed by Anthropic. “Claude” is a trademark of Anthropic.</div>
+  </div>
+</footer>
+</body>
+</html>

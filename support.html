@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tally · Support</title>
+<meta name="description" content="Support and help for Tally, a macOS menu-bar app that tracks your Claude.ai session and weekly usage." />
+<meta name="robots" content="all" />
+<link rel="icon" href="favicon.ico?v=2" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2" />
+<meta name="theme-color" content="#13151B" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#13151B; --panel:#171A22; --ink:#E9EBEE; --soft:#8C92A0; --faint:#646b79;
+    --card:rgba(255,255,255,.05); --line:rgba(255,255,255,.09);
+    --teal:#4FD6E6; --teal-d:#1E9AAD; --green:#34D058;
+    --grad:linear-gradient(135deg,#3FD8C9,#1E9AAD);
+    --sans:'Plus Jakarta Sans',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--teal);color:#06222a}
+  a{color:var(--teal)}a:hover{color:#7df0ff}
+  .glow{position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(46vw 30vw at 50% -10%,rgba(79,214,230,.10),transparent 72%)}
+  .grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-image:linear-gradient(rgba(120,190,205,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(120,190,205,.05) 1px,transparent 1px);
+    background-size:44px 44px;
+    -webkit-mask:radial-gradient(130% 100% at 50% 8%,#000 36%,transparent 84%);mask:radial-gradient(130% 100% at 50% 8%,#000 36%,transparent 84%)}
+  .wrap{max-width:780px;margin:0 auto;padding:0 26px;position:relative;z-index:1}
+
+  header{position:sticky;top:0;z-index:5;background:rgba(19,21,27,.72);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;font-size:19px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .brand img{width:27px;height:27px;border-radius:8px}
+  .nav a.back{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);text-decoration:none}
+  .nav a.back:hover{color:var(--ink)}
+
+  main{padding:56px 0 80px}
+  h1{font-weight:800;font-size:clamp(34px,6vw,54px);line-height:1.04;letter-spacing:-.03em;margin-bottom:10px}
+  h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .updated{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:36px}
+  h2{font-weight:800;font-size:22px;margin:38px 0 10px;letter-spacing:-.01em}
+  p{color:var(--soft);margin-bottom:14px}
+  ul{margin:0 0 14px 22px;color:var(--soft)}
+  li{margin-bottom:7px}
+  b{font-weight:700;color:var(--ink)}
+  .lead{font-size:18px;color:var(--ink);margin-bottom:8px}
+  .box{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin:22px 0;
+    box-shadow:0 24px 50px -34px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.04)}
+  .box h3{font-weight:800;font-size:18px;margin-bottom:6px;color:var(--ink)}
+  code{font-family:var(--mono);font-size:13px;background:rgba(255,255,255,.06);border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:var(--ink)}
+  .note{font-size:13px;color:var(--faint);font-style:italic}
+  .cta{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:14px;font-weight:600;text-decoration:none;color:#06222a;background:var(--grad);padding:11px 18px;border-radius:11px}
+  footer{border-top:1px solid var(--line);padding:26px 0;font-family:var(--mono);font-size:12px;color:var(--faint)}
+  footer a{color:var(--soft)}
+  .disclaim{margin-top:10px;font-size:11.5px;color:var(--faint);opacity:.8}
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+<div class="grid-bg" aria-hidden="true"></div>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img src="favicon-192.png?v=2" alt="" />tally</a>
+    <a class="back" href="/">← Back to site</a>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <h1>Support &amp; <span class="grad">Help</span></h1>
+  <div class="updated">Tally for macOS</div>
+
+  <p class="lead">Need a hand with Tally? You're in the right place.</p>
+  <p>Tally is a small macOS menu-bar app that shows your Claude.ai session and weekly usage as live rings and alerts you before you hit a limit. If something isn't working or you have a question, reach out and we'll help.</p>
+
+  <div class="box">
+    <h3>Contact us</h3>
+    <p style="margin:0 0 10px">The fastest way to get help is by email. We typically reply within a couple of days.</p>
+    <a class="cta" href="mailto:ardour.isolate3@icloud.com?subject=Tally%20Support">Email support</a>
+  </div>
+
+  <h2>Common questions</h2>
+
+  <h2>How do I sign in?</h2>
+  <p>Open Tally from the menu bar and choose <b>Sign in</b>. A Claude.ai login window appears — log in with your own Claude account exactly as you would on the web. Tally then reads your usage automatically. Your session is stored only on your Mac, in the macOS Keychain.</p>
+
+  <h2>Tally says my session expired</h2>
+  <p>Claude.ai sessions expire periodically. Just open Tally and sign in again to refresh it.</p>
+
+  <h2>Which plans are supported?</h2>
+  <p>Tally is built for individual <b>Pro</b> and <b>Max</b> plans. Team and Enterprise accounts are governed by org-level seat policies that the app does not model.</p>
+
+  <h2>My usage numbers look off</h2>
+  <p>Tally reads the same usage data Claude.ai shows in its web app, polled every 30 seconds with backoff. Brief differences can occur around window resets; they catch up on the next refresh. Figures may not always match Anthropic's own accounting exactly.</p>
+
+  <h2>How do I update the app?</h2>
+  <p>If you installed from the <b>Mac App Store</b>, updates arrive automatically through the App Store. If you installed the <code>.dmg</code> from our website, Tally checks for updates itself and will offer to install new versions.</p>
+
+  <h2>How do I uninstall?</h2>
+  <p>Quit Tally, then drag it from your Applications folder to the Trash. Signing out first clears your stored Claude.ai session from the Keychain.</p>
+
+  <h2>Privacy &amp; terms</h2>
+  <p>Tally keeps your data on your device and does not collect or sell it. See our <a href="privacy.html">Privacy Policy</a> and <a href="terms.html">Terms</a> for details.</p>
+
+  <h2>Still stuck?</h2>
+  <p>Email <a href="mailto:ardour.isolate3@icloud.com">ardour.isolate3@icloud.com</a> with your macOS version and a short description (a screenshot helps), and we'll get back to you.</p>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">Tally · made by <a href="https://github.com/alfital2">TalTools</a> · <a href="/">tallyrate.site</a>
+    <div class="disclaim">Independent project, not affiliated with or endorsed by Anthropic. “Claude” is a trademark of Anthropic.</div>
+  </div>
+</footer>
+</body>
+</html>
