@@ -24,12 +24,24 @@ a{color:inherit;text-decoration:none}
 ::selection{background:var(--teal);color:#04231f}
 
 /* ---------- the desktop scene ---------- */
-.scene{position:relative;min-height:100svh;display:flex;flex-direction:column;overflow:hidden;
+.scene{position:relative;min-height:100svh;display:flex;flex-direction:column;overflow:hidden;isolation:isolate;
   background:
-    radial-gradient(72% 52% at 84% -10%, rgba(79,214,230,.16), transparent 60%),
-    radial-gradient(66% 56% at 8% 2%, rgba(64,150,205,.09), transparent 64%),
-    radial-gradient(130% 85% at 50% 122%, rgba(8,16,34,.55), transparent 62%),
-    linear-gradient(166deg, #0f2a3a 0%, #0c2036 32%, #0a1730 58%, #080f22 80%, #05090f 100%)}
+    /* rippled green waves, bottom-left - softened */
+    repeating-radial-gradient(circle at 6% 120%, rgba(214,248,140,.14) 0 30px, rgba(150,210,90,.07) 30px 64px),
+    /* airy wash to lift everything */
+    linear-gradient(56deg, rgba(255,255,255,.18), rgba(255,255,255,0) 55%),
+    /* Sonoma-style diagonal color bands (original homage) - brighter, softer */
+    linear-gradient(56deg,
+      #a6dd54 0%,
+      #8ec840 20%,
+      #6fae46 33%,
+      #d98a6e 44%,
+      #ff8a7e 52%,
+      #ff869c 61%,
+      #f3a6c4 71%,
+      #c59cf0 81%,
+      #97a0f4 92%,
+      #8b97f7 100%)}
 .scene::after{content:"";position:absolute;inset:-10%;pointer-events:none;
   background:
     radial-gradient(44% 32% at 74% -4%, rgba(79,214,230,.12), transparent 72%),
@@ -37,7 +49,12 @@ a{color:inherit;text-decoration:none}
   animation:aura 28s ease-in-out infinite alternate}
 @keyframes aura{from{transform:translate3d(-1%,0,0) scale(1)}to{transform:translate3d(1.5%,2%,0) scale(1.06)}}
 @media (prefers-reduced-motion: reduce){.scene::after{animation:none}}
-.stars{position:absolute;inset:0;opacity:.28;
+/* desktop: fade the wallpaper bottom into the dark section below so the seam blends */
+@media(min-width:1100px){
+  .scene::before{content:"";position:absolute;left:0;right:0;bottom:0;height:32%;z-index:-1;pointer-events:none;
+    background:linear-gradient(to bottom, rgba(245,246,242,0) 0%, rgba(245,246,242,0) 52%, rgba(245,246,242,.5) 84%, #f5f6f2 100%)}
+}
+.stars{display:none;position:absolute;inset:0;opacity:.28;
   background-image:radial-gradient(1.4px 1.4px at 20% 30%, #fff, transparent),radial-gradient(1.2px 1.2px at 70% 18%, #cfeaff, transparent),radial-gradient(1px 1px at 42% 60%, #fff, transparent),radial-gradient(1.3px 1.3px at 88% 44%, #bfe6ff, transparent),radial-gradient(1px 1px at 12% 70%, #fff, transparent);
   background-repeat:no-repeat}
 
@@ -86,20 +103,22 @@ a{color:inherit;text-decoration:none}
 .hero .badge{display:inline-flex;align-items:center;gap:8px;
   font-family:var(--mono);font-size:12px;color:#cdeefb;background:rgba(255,255,255,.10);
   border:1px solid rgba(255,255,255,.16);padding:7px 13px;border-radius:999px;margin-bottom:24px;backdrop-filter:blur(8px)}
-.hero .badge b{color:var(--teal)}
-.hero h1{font-weight:800;font-size:clamp(34px,4.9vw,60px);line-height:1.04;letter-spacing:-.035em;color:#f4f7fb;
-  text-shadow:0 1px 30px rgba(0,0,0,.35)}
-.hero h1 .g{color:#5fdfe9}
-.hero p{margin-top:22px;font-size:clamp(15px,1.5vw,18px);color:rgba(228,234,242,.78);max-width:48ch;line-height:1.6}
-.hero p b{color:#fff;font-weight:700}
+.hero .badge b{color:#0b6f7d}
+.hero h1{font-weight:800;font-size:clamp(34px,4.9vw,60px);line-height:1.04;letter-spacing:-.035em;color:#10241f;
+  text-shadow:0 1px 22px rgba(255,255,255,.35)}
+.hero h1 .g{color:#fbfffe;-webkit-text-fill-color:#fbfffe;
+  text-shadow:0 1px 2px rgba(10,24,20,.32),0 3px 24px rgba(10,24,20,.4)}
+.hero p{margin-top:22px;font-size:clamp(15px,1.5vw,18px);color:rgba(18,38,42,.86);max-width:48ch;line-height:1.6;
+  text-shadow:0 1px 16px rgba(255,255,255,.3)}
+.hero p b{color:#0c2a28;font-weight:700}
 .hero .row{margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15.5px;padding:15px 26px;border-radius:14px;
   background:#fff;color:#0a0c10;box-shadow:0 20px 44px -18px rgba(0,0,0,.6);cursor:pointer;
   transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
 .btn:hover{transform:translateY(-3px);box-shadow:0 28px 54px -18px rgba(0,0,0,.7)}
 .btn svg{width:16px;height:16px;fill:currentColor}
-.hint{font-family:var(--mono);font-size:12.5px;color:rgba(233,237,242,.72)}
-.hint .ok{color:#46d58a}
+.hint{font-family:var(--mono);font-size:12.5px;color:rgba(20,40,42,.7)}
+.hint .ok{color:#0a7d3f}
 
 /* workspace + windows */
 .workspace{margin:32px auto 0;max-width:600px;display:flex;flex-direction:column;gap:18px}
@@ -146,6 +165,20 @@ a{color:inherit;text-decoration:none}
 .caret.off{display:none}
 @keyframes blink{50%{opacity:0}}
 
+/* safari - light (white-ish) variant */
+.win.safari{background:#fdfdfd;border:1px solid rgba(0,0,0,.14)}
+.win.safari .bar{background:#e9eaed;border-bottom:1px solid rgba(0,0,0,.09);color:#5a6573}
+.win.safari .navg{color:#a2a9b4}
+.win.safari .addr{background:#fff;border:1px solid rgba(0,0,0,.12);color:#3a4250}
+.win.safari .saftabs{background:#dedfe3;border-bottom:1px solid rgba(0,0,0,.08)}
+.win.safari .saftab{color:#5a6573}
+.win.safari .saftab .x{color:#8a93a0}
+.win.safari .saftab.active{background:#fdfdfd;color:#1a222e}
+.win.safari .saftabs .plus{color:#8a93a0}
+.win.safari .saf-body{background:#fdfdfd}
+.win.safari .bub{background:#f1f2f5;border:1px solid rgba(0,0,0,.08);color:#2b313b}
+.win.safari .bub .model{color:#7a828f}
+
 /* terminal */
 .termbar .title{margin:0 auto}
 .term-body{background:#0b0f0d;padding:12px 14px;font-family:var(--mono);font-size:11.5px;line-height:1.7;color:#cfe9d8;height:196px;overflow:hidden}
@@ -169,10 +202,33 @@ a{color:inherit;text-decoration:none}
 .typing.off{display:none}
 @keyframes td{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
 
+/* phone · Claude on mobile */
+.phone{position:relative;align-self:center;justify-self:center;width:100%;max-width:132px;
+  aspect-ratio:118/252;border-radius:32px;background:#0c0e13;padding:7px;
+  border:1px solid rgba(0,0,0,.25);transform:rotate(-6deg);
+  box-shadow:0 44px 92px -34px rgba(0,0,0,.82),0 0 0 1.5px rgba(255,255,255,.06) inset;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.phone-scr{position:relative;width:100%;height:100%;border-radius:25px;overflow:hidden;
+  background:#f6f4ee;display:flex;flex-direction:column}
+.phone-scr::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);
+  width:32%;height:11px;background:#0c0e13;border-radius:8px;z-index:5}
+.phone-status{display:flex;justify-content:space-between;align-items:center;padding:7px 13px 3px;font-size:8.5px;font-weight:600;color:#2a2f38}
+.phone-status .live .cdot{width:6px;height:6px}
+.phone-head{display:flex;align-items:center;gap:6px;padding:3px 11px 7px;font-weight:700;font-size:11px;color:#1a222e;border-bottom:1px solid rgba(0,0,0,.06)}
+.phone-ava{width:17px;height:17px;border-radius:6px;background:linear-gradient(135deg,#d97757,#bb5533);display:grid;place-items:center;color:#fff;font-size:9px}
+.phone-chat{flex:1;display:flex;flex-direction:column;gap:7px;padding:10px 9px;overflow:hidden}
+.pmsg{display:flex;font-size:10px}
+.pmsg.user{justify-content:flex-end}
+.pmsg.user p{background:#1a222e;color:#f4f6f9;font-weight:500;padding:6px 9px;border-radius:11px 11px 3px 11px;max-width:86%;line-height:1.4}
+.pmsg.ai p{background:#fff;border:1px solid rgba(0,0,0,.07);color:#2b313b;padding:6px 9px;border-radius:11px 11px 11px 3px;max-width:90%;line-height:1.45}
+.phone-input{margin:0 9px 10px;height:24px;border-radius:13px;background:#fff;border:1px solid rgba(0,0,0,.1);display:flex;align-items:center;padding:0 11px;color:#9aa3b0;font-size:9px}
+
 /* the flying "+%" usage tick */
-.fly{position:fixed;z-index:60;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal);
-  pointer-events:none;text-shadow:0 0 10px rgba(79,214,230,.7);will-change:transform,opacity}
-.fly.hot{color:var(--red);text-shadow:0 0 10px rgba(255,69,58,.7)}
+.fly{position:fixed;z-index:60;font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;
+  pointer-events:none;background:#1f9150;padding:2px 8px;border-radius:999px;
+  box-shadow:0 4px 16px -2px rgba(12,40,28,.45),0 0 0 1px rgba(255,255,255,.18) inset;
+  text-shadow:0 1px 2px rgba(8,20,14,.35);will-change:transform,opacity}
+.fly.hot{background:#e0432f;box-shadow:0 4px 16px -2px rgba(60,12,8,.45),0 0 0 1px rgba(255,255,255,.18) inset}
 
 /* ===== DESKTOP: hero top-left · Tally panel top-right · windows along the bottom ===== */
 @media(min-width:1100px){
@@ -184,6 +240,9 @@ a{color:inherit;text-decoration:none}
     display:grid;grid-template-columns:1.05fr 1.5fr 1.05fr;gap:18px;align-items:start}
   .win{position:static}
   .win:hover{transform:translateY(-5px);box-shadow:0 50px 100px -34px rgba(0,0,0,.85)}
+  /* phone floats in the open center pocket: dropped below the headline, pushed right (stays below the right-edge Tally panel) */
+  .phone{grid-area:side;align-self:end;justify-self:start;margin:0 0 5vh 5vw;width:auto;max-width:none;height:min(44vh,330px)}
+  .phone:hover{transform:rotate(-6deg) translateY(-8px);box-shadow:0 60px 110px -34px rgba(0,0,0,.85)}
 }
 
 /* short desktop viewports: compress the scene so the dock always stays on-screen */
@@ -245,49 +304,52 @@ a{color:inherit;text-decoration:none}
   .win{display:none}
   .dock{display:none}
   .workspace{display:none}
+  .phone{display:none}
   .scene{min-height:auto;padding-top:58px}      /* room for the fixed top nav; don't stretch to full height */
   .topnav{display:flex}
   /* lower width: hero on top, then a labeled menu-bar demo + its hanging panel, then the strip */
   .stage{order:1;flex:none;padding:18px 5vw 34px}  /* flex:none stops the hero growing to fill the page (the big gap) */
-  .menusep{display:flex;align-items:center;gap:14px;order:2;margin:0 16px;
-    font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(233,237,242,.4)}
-  .menusep::before,.menusep::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.13)}
+  .menusep{display:block;order:2;margin:6px 16px 0;height:1px;background:rgba(20,42,40,.22)}
+  .menusep span{display:none}
   .menubar{order:3}
   /* centered panel, but wide enough that the menu-bar ring stays within its span
      so the JS-placed arrow always lands on the ring (see placeArrow) */
   .drop{order:4;position:static;width:min(92vw, max(360px, calc(100vw - 480px)));margin:6px auto 0}
   .srcblock{order:5;margin-top:30px;padding-bottom:32px}
-  .srccap{display:block;text-align:center;font-family:var(--mono);font-size:12px;line-height:1.5;color:rgba(233,237,242,.72);max-width:32ch;margin:0 auto}
+  .srccap{display:block;text-align:center;font-family:var(--mono);font-size:12px;line-height:1.5;color:rgba(16,36,32,.82);max-width:32ch;margin:0 auto;text-shadow:0 1px 14px rgba(255,255,255,.3)}
   .sources{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
+  .src{color:#15302c;background:rgba(255,255,255,.46);border-color:rgba(16,36,32,.2)}
+  .src svg{stroke:#2c5a52}
 }
 
-/* ---------- content below the fold ---------- */
-.below{background:#0b0d12;color:#e9edf2;padding:96px 7vw 30px}
-.below .lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
-.below h2{font-weight:800;font-size:clamp(30px,4.4vw,52px);letter-spacing:-.03em;margin:12px 0 56px;max-width:16ch;line-height:1.05}
-.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden}
+/* ---------- content below the fold (light theme) ---------- */
+.below{background:#f5f6f2;color:#1a2a26;padding:96px 7vw 30px}
+.below .lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#0a8294}
+.below h2{font-weight:800;font-size:clamp(30px,4.4vw,52px);letter-spacing:-.03em;margin:12px 0 56px;max-width:16ch;line-height:1.05;color:#14201d}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(18,40,36,.1);border:1px solid rgba(18,40,36,.1);border-radius:20px;overflow:hidden}
 @media(max-width:820px){.feats{grid-template-columns:1fr}}
-.feat{background:#0b0d12;padding:34px 30px;transition:background .3s}
-.feat:hover{background:#111521}
-.feat .ic{width:44px;height:44px;border-radius:12px;background:rgba(79,214,230,.12);display:grid;place-items:center;margin-bottom:16px}
-.feat .ic svg{width:22px;height:22px;stroke:var(--teal);stroke-width:1.9;fill:none}
-.feat h3{font-size:18px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
-.feat p{font-size:14.5px;color:#8b94a4;line-height:1.55}
+.feat{background:#fff;padding:34px 30px;transition:background .3s}
+.feat:hover{background:#f0fbfb}
+.feat .ic{width:44px;height:44px;border-radius:12px;background:rgba(10,130,148,.13);display:grid;place-items:center;margin-bottom:16px}
+.feat .ic svg{width:22px;height:22px;stroke:#0a8294;stroke-width:1.9;fill:none}
+.feat h3{font-size:18px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px;color:#14201d}
+.feat p{font-size:14.5px;color:#5d6b64;line-height:1.55}
 .closing{margin-top:80px;text-align:center}
-.closing .price{font-weight:800;font-size:clamp(44px,9vw,104px);letter-spacing:-.04em;line-height:.94;color:#f4f7fb}
-.closing .price .g{color:#5fdfe9}
-.closing p{color:#8b94a4;margin:18px auto 0;max-width:48ch}
-.closing .btn{background:#5fdfe9;color:#042024}
-.closing .btn:hover{background:#74e7ef}
+.closing .price{font-weight:800;font-size:clamp(44px,9vw,104px);letter-spacing:-.04em;line-height:.94;color:#14201d}
+.closing .price .f{color:#14201d}
+.closing .price .g{color:#14201d;-webkit-text-fill-color:#14201d}
+.closing p{color:#5d6b64;margin:18px auto 0;max-width:48ch}
+.closing .btn{background:#0a9488;color:#fff}
+.closing .btn:hover{background:#0aa89a}
 .free-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:40px 0 36px;text-align:left}
 @media(max-width:820px){.free-grid{grid-template-columns:1fr}}
-.free-col{background:#0b0d12;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:26px;transition:background .3s}
-.free-col:hover{background:#111521}
-.free-col h3{font-weight:800;font-size:18px;letter-spacing:-.01em;margin-bottom:8px}
-.free-col p{font-size:14.5px;color:#8b94a4;line-height:1.6;margin:0;max-width:none}
-footer{margin-top:70px;padding-top:26px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:#6b7585}
-footer a:hover{color:var(--teal)}
-.disc{text-align:center;font-family:var(--mono);font-size:11px;color:#4a5360;margin-top:20px}
+.free-col{background:#fff;border:1px solid rgba(18,40,36,.1);border-radius:18px;padding:26px;transition:background .3s,box-shadow .3s}
+.free-col:hover{background:#fbfffe;box-shadow:0 10px 32px -14px rgba(18,40,36,.2)}
+.free-col h3{font-weight:800;font-size:18px;letter-spacing:-.01em;margin-bottom:8px;color:#14201d}
+.free-col p{font-size:14.5px;color:#5d6b64;line-height:1.6;margin:0;max-width:none}
+footer{margin-top:70px;padding-top:26px;border-top:1px solid rgba(18,40,36,.12);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:#6f7a73}
+footer a:hover{color:#0a8294}
+.disc{text-align:center;font-family:var(--mono);font-size:11px;color:#98a29b;margin-top:20px}
 </style>
 </head>
 <body>
@@ -359,7 +421,7 @@ footer a:hover{color:var(--teal)}
     <!-- hero copy -->
     <div class="hero">
       <h1>Wherever Claude runs,<br><span class="g">your limit's one glance away.</span></h1>
-<p><b>Tally</b> tracks your Claude usage limit in real time — no matter where you're working: <b>web</b>, <b>Claude Code</b>, the <b>Mac app</b>, or a script running overnight. Always one glance away in your menu bar.</p>      <div class="row">
+<p><b>Tally</b> tracks your Claude usage limit in real time - no matter where you're working: <b>web</b>, <b>Claude Code</b>, the <b>Mac app</b>, your <b>phone</b>, or a script running overnight. Always one glance away in your menu bar.</p>      <div class="row">
         <a class="btn" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">
           <svg viewBox="0 0 24 24"><path d="M17.05 12.04c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.32.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.25 2.74 2.21 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.69.71 2.85.69 1.18-.02 1.92-1.08 2.64-2.14.83-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.5zM14.88 5.39c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.55 1.31-.56.64-1.05 1.67-.92 2.65.97.08 1.96-.49 2.57-1.21z"/></svg>
           Download for macOS
@@ -423,11 +485,24 @@ footer a:hover{color:var(--teal)}
       </div>
 
     </div>
+
+    <!-- Claude · iPhone — floats in the hero's open right-side space -->
+    <div class="phone" id="winPhone">
+      <div class="phone-scr">
+        <div class="phone-status"><span>9:41</span><span class="live"><span class="cdot"></span></span></div>
+        <div class="phone-head"><span class="phone-ava">✳</span><span>Claude</span></div>
+        <div class="phone-chat">
+          <div class="pmsg user"><p id="phoneUser">Reply to this email for me?</p></div>
+          <div class="pmsg ai"><p><span id="phoneAI"></span><span class="typing off" id="phoneTyping"><i></i><i></i><i></i></span></p></div>
+        </div>
+        <div class="phone-input"><span>Message Claude…</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- shown only on narrow widths (below the hero + panel) -->
   <div class="srcblock">
-    <p class="srccap">One limit — fed by every Claude you run ↑</p>
+    <p class="srccap">One limit - fed by every Claude you run ↑</p>
     <div class="sources" aria-hidden="true">
       <div class="src" title="Claude on the web"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"/></svg>Web</div>
       <div class="src" title="Claude Code in the terminal"><svg viewBox="0 0 24 24"><path d="M6 8l4 4-4 4"/><path d="M13 16h5"/></svg>Claude Code</div>
@@ -485,23 +560,23 @@ footer a:hover{color:var(--teal)}
     <div class="feat">
       <div class="ic"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></div>
       <h3>Alert before the wall</h3>
-      <p>Set a threshold — say 80% — and get pinged separately for session and weekly. Surprise cut-offs, gone.</p>
+      <p>Set a threshold - say 80% - and get pinged separately for session and weekly. Surprise cut-offs, gone.</p>
     </div>
     <div class="feat" style="grid-column:1/-1">
       <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 2.4v5.3c0 4.3-3 7.5-7 8.7-4-1.2-7-4.4-7-8.7V5.4L12 3z"/></svg></div>
-      <h3>Private &amp; local — nothing leaves your Mac</h3>
+      <h3>Private &amp; local - nothing leaves your Mac</h3>
       <p>Tally uses your own Claude login, stays on your machine, and talks only to claude.ai. No servers, no accounts, no tracking.</p>
     </div>
   </div>
 
   <div class="closing">
     <span class="lab" style="display:block;margin-bottom:14px">// pricing</span>
-    <div class="price">Free. <span class="g">Forever.</span></div>
-    <p>Every feature, for everyone — no account, no cost, no catch.</p>
+    <div class="price"><span class="f">Free.</span> <span class="g">Forever.</span></div>
+    <p>Every feature, for everyone - no account, no cost, no catch.</p>
     <div class="free-grid">
-      <div class="free-col"><h3>100% free</h3><p>Download it, use it, keep it. Every feature works for everyone — no account, no cost, no catch.</p></div>
+      <div class="free-col"><h3>100% free</h3><p>Download it, use it, keep it. Every feature works for everyone - no account, no cost, no catch.</p></div>
       <div class="free-col"><h3>The "7-day trial"</h3><p>A friendly joke. After a week, Tally may gently ask whether you'd like to chip in. It never stops working and nothing is taken away.</p></div>
-      <div class="free-col"><h3>Support is optional</h3><p>If Tally saves you from a few surprise cut-offs, you can support the project. Entirely optional — the app is fully yours either way. 💙</p></div>
+      <div class="free-col"><h3>Support is optional</h3><p>If Tally saves you from a few surprise cut-offs, you can support the project. Entirely optional - the app is fully yours either way. 💙</p></div>
     </div>
     <a class="btn" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">Download Tally</a>
   </div>
@@ -596,9 +671,10 @@ footer a:hover{color:var(--teal)}
   }
 
   /* ---------- window drivers ---------- */
-  const winSafari=document.getElementById('winSafari'), winTerm=document.getElementById('winTerm'), winMac=document.getElementById('winMac');
+  const winSafari=document.getElementById('winSafari'), winTerm=document.getElementById('winTerm'), winMac=document.getElementById('winMac'), winPhone=document.getElementById('winPhone');
   const safUser=document.getElementById('safUser'), safAI=document.getElementById('safAI'), safCaret=document.getElementById('safCaret');
   const macUser=document.getElementById('macUser'), macAI=document.getElementById('macAI'), macTyping=document.getElementById('macTyping');
+  const phoneUser=document.getElementById('phoneUser'), phoneAI=document.getElementById('phoneAI'), phoneTyping=document.getElementById('phoneTyping');
   const termBody=document.getElementById('termBody');
 
   function stream(el, winEl, text, cps, done){
@@ -665,6 +741,24 @@ footer a:hover{color:var(--teal)}
     }, 1600);
   }
 
+  // -- Claude on the phone: quick, everyday asks --
+  const phoneScript=[
+    {q:"How do I undo my last commit?", a:"git reset --soft HEAD~1 - keeps your changes staged."},
+    {q:"TL;DR this PR for me?", a:"Refactors auth, adds 12 tests, no API changes. Safe to merge."},
+    {q:"Explain this error in one line.", a:"You're calling .map on undefined - guard the array before it renders."},
+    {q:"Regex for a valid email?", a:"^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$ - fine for a form check."}
+  ];
+  let pi=0;
+  function phoneCycle(){
+    const p=phoneScript[pi++%phoneScript.length];
+    phoneUser.textContent=p.q; phoneAI.textContent=''; phoneTyping.classList.remove('off');
+    work(winPhone, rnd(.1,.22));
+    setTimeout(()=>{
+      phoneTyping.classList.add('off');
+      stream(phoneAI, winPhone, p.a, 36, ()=>{ work(winPhone, rnd(.18,.32)); setTimeout(phoneCycle, 3000); });
+    }, 1500);
+  }
+
   // -- mobile: cycle the source pills, each feeding the same shared usage ring --
   function srcTick(el, amt){
     const hot = session>=78;
@@ -692,6 +786,7 @@ footer a:hover{color:var(--teal)}
     session=30; sTarget=30; weekly=13; wTarget=13;
     safUser.textContent=safScript[0].q; safAI.textContent=safScript[0].a; safCaret.classList.add('off');
     macUser.textContent=macScript[0].q; macAI.textContent=macScript[0].a; macTyping.classList.add('off');
+    phoneUser.textContent=phoneScript[0].q; phoneAI.textContent=phoneScript[0].a; phoneTyping.classList.add('off');
     termRuns[0].forEach(t=>{const d=document.createElement('div');d.className='l '+cls(t);d.textContent=t;termBody.appendChild(d);});
     paintAll(); setInterval(paintAll,1000);
   }else{
@@ -702,12 +797,13 @@ footer a:hover{color:var(--teal)}
       requestAnimationFrame(frame);
     })();
     if (mobile) {
-      // phones: the windows are hidden — drive the rings from the source strip instead
+      // phones: the windows are hidden - drive the rings from the source strip instead
       runSources();
     } else {
       safCycle();
       setTimeout(termCycle, 700);
       setTimeout(macCycle, 1400);
+      setTimeout(phoneCycle, 2100);
     }
   }
 
