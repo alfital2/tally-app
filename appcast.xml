@@ -6,13 +6,13 @@
     <description>In-app updates for Tally.</description>
     <language>en</language>
     <item>
-      <title>Tally 1.5.0</title>
-      <pubDate>Sat, 25 Jul 2026 20:25:20 +0000</pubDate>
-      <sparkle:version>8</sparkle:version>
-      <sparkle:shortVersionString>1.5.0</sparkle:shortVersionString>
+      <title>Tally 1.5.1</title>
+      <pubDate>Sat, 25 Jul 2026 21:51:36 +0000</pubDate>
+      <sparkle:version>9</sparkle:version>
+      <sparkle:shortVersionString>1.5.1</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
       <link>https://tallyrate.site</link>
-      <enclosure url="https://github.com/alfital2/tally-app/releases/download/v1.5.0/Tally.zip" type="application/octet-stream" sparkle:edSignature="TS0SbD0kelMXPRSpvGGb1MOBxT9JgqLHbBKfCbnhclH79Xi/WYMG4k0SKHObfIoqcYtMrmextra/V/f3uuApAA==" length="2345797" />
+      <enclosure url="https://github.com/alfital2/tally-app/releases/download/v1.5.1/Tally.zip" type="application/octet-stream" sparkle:edSignature="8vkBR9Pl4PCcza/x+yZjSalzUlUVHcG8e9g5zcnvy6fCxJWHKTCV40lLH6iAGe+V4OKzttDQvyZEH6fd4+zwAQ==" length="2375178" />
     </item>
   </channel>
 </rss>
