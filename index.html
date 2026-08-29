@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Tally · Live in your menu bar</title>
-<meta name="description" content="Tally is a tiny macOS menu-bar app that shows your Claude.ai session and weekly usage as live Apple-Watch-style rings, alongside every Claude Code session running on your Mac - so you never hit a limit by surprise." />
+<meta name="description" content="Tally is a tiny macOS menu-bar app that tracks Claude and Codex usage, reset windows, and live coding sessions — so you never hit an AI limit by surprise." />
 <link rel="icon" href="favicon.ico?v=3" sizes="any" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3" />
 <meta name="theme-color" content="#0b0d12" />
@@ -87,9 +87,13 @@ a{color:inherit;text-decoration:none}
 .drop::before{content:"";position:absolute;top:-7px;left:var(--ax,42px);width:14px;height:14px;background:inherit;border-left:1px solid rgba(255,255,255,.12);border-top:1px solid rgba(255,255,255,.12);transform:rotate(45deg)}
 @keyframes dropIn{from{opacity:0;transform:translateY(-14px) scale(.96)}to{opacity:1;transform:none}}
 .drop h4{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:2px 4px 14px}
+.provider-title{font-size:11px;font-weight:750;color:#c2c9d6;margin:0 5px 5px}
 .drop .rings{display:flex;gap:10px;justify-content:center;margin-bottom:12px}
+.drop .rings.codex-rings{margin:2px 0 4px;padding-top:6px;border-top:1px solid rgba(255,255,255,.09)}
+.codex-rings .dr{gap:3px}
+.codex-rings .dr .t{font-size:12px}
 .dr{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1}
-.dr svg{width:112px;height:112px;overflow:visible}
+.dr svg{width:82px;height:82px;overflow:visible}
 .dr .t{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#c2c9d6}
 .dr .t .tdot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 7px var(--teal)}
 .drtrack{stroke:rgba(255,255,255,.12)}
@@ -388,7 +392,7 @@ footer a:hover{color:#0a8294}
   <div class="menusep"><span>live demo · your menu bar</span></div>
   <div class="menubar">
     <span class="logo"></span>
-    <span class="mi">Claude</span>
+    <span class="mi">Claude + Codex</span>
     <span class="mi dim">File</span><span class="mi dim">Edit</span><span class="mi dim">View</span><span class="mi dim">Window</span>
     <div class="right">
       <div class="barTally" title="Tally - session usage">
@@ -399,6 +403,12 @@ footer a:hover{color:#0a8294}
             pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 18 18)" style="filter:drop-shadow(0 0 4px #34D058cc)"/>
         </svg>
         <span class="pct" id="barPct">0%</span>
+        <span style="opacity:.45">·</span>
+        <svg viewBox="0 0 36 36" aria-label="Codex usage">
+          <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="4"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#34D058" stroke-width="4" pathLength="100" stroke-dasharray="41 100" transform="rotate(-90 18 18)"/>
+        </svg>
+        <span class="pct">41%</span>
       </div>
       <span class="mono bat">100%</span>
       <span class="mono" id="clock"></span>
@@ -407,6 +417,7 @@ footer a:hover{color:#0a8294}
 
   <!-- the Tally panel (open) -->
   <div class="drop">
+    <div class="provider-title">Claude</div>
     <div class="rings">
       <div class="dr">
         <svg viewBox="0 0 120 120">
@@ -440,20 +451,49 @@ footer a:hover{color:#0a8294}
       </div>
     </div>
     <div class="drplan">Plan: Max (5×) · Updated just now</div>
+    <div class="provider-title" style="margin-top:9px">✦ Codex</div>
+    <div class="rings codex-rings">
+      <div class="dr">
+        <svg viewBox="0 0 120 120">
+          <g transform="rotate(-90 60 60)" fill="none" stroke-linecap="round">
+            <circle class="drtrack" cx="60" cy="60" r="50" stroke-width="9"/>
+            <circle class="drtrack" cx="60" cy="60" r="37" stroke-width="7"/>
+            <circle cx="60" cy="60" r="50" stroke-width="9" stroke="#34D058" pathLength="100" stroke-dasharray="41 100"/>
+            <circle cx="60" cy="60" r="37" stroke-width="7" stroke="#4FD6E6" pathLength="100" stroke-dasharray="31 100"/>
+          </g>
+          <text x="60" y="56" text-anchor="middle" class="drnum" fill="#34D058">41%</text>
+          <text x="60" y="72" text-anchor="middle" class="drlbl">session</text>
+        </svg>
+        <span class="t"><span class="tdot"></span>Resets in 4h 16m</span>
+      </div>
+      <div class="dr">
+        <svg viewBox="0 0 120 120">
+          <g transform="rotate(-90 60 60)" fill="none" stroke-linecap="round">
+            <circle class="drtrack" cx="60" cy="60" r="50" stroke-width="9"/>
+            <circle class="drtrack" cx="60" cy="60" r="37" stroke-width="7"/>
+            <circle cx="60" cy="60" r="50" stroke-width="9" stroke="#34D058" pathLength="100" stroke-dasharray="6 100"/>
+            <circle cx="60" cy="60" r="37" stroke-width="7" stroke="#4FD6E6" pathLength="100" stroke-dasharray="2 100"/>
+          </g>
+          <text x="60" y="56" text-anchor="middle" class="drnum" fill="#34D058">6%</text>
+          <text x="60" y="72" text-anchor="middle" class="drlbl">weekly</text>
+        </svg>
+        <span class="t"><span class="tdot"></span>Resets in 6d 23h</span>
+      </div>
+    </div>
+    <div class="drplan">Plan: Plus · Updated just now</div>
 
-    <!-- live Claude Code sessions -->
+    <!-- live Claude Code and Codex sessions -->
     <div class="drsec">
-      <div class="drhead"><b>3</b> sessions <span>1 working</span></div>
+      <div class="drhead"><b>Claude Code · 1</b> session <span>1 working</span></div>
       <div class="drrow"><i class="sdot run"></i><span class="sname">tally-0e</span><em class="schip">Opus 5</em><span class="sval" id="mockTok">133K</span></div>
-      <div class="drrow"><i class="sdot wait"></i><span class="sname">flickey-00</span><em class="schip">Fable 5</em><span class="sval">3.1M</span></div>
-      <div class="drrow"><i class="sdot"></i><span class="sname">knowledge-graph-a2</span><em class="schip">Opus 5</em><span class="sval">74K</span></div>
+      <div class="drhead" style="margin-top:8px"><b>Codex · 1</b> session <span>1 working</span></div>
+      <div class="drrow"><i class="sdot run"></i><span class="sname">Ship Codex integration</span><em class="schip">Sol 5.6</em><span class="sval">84K</span></div>
     </div>
 
     <!-- what's happening on claude.ai -->
     <div class="drsec">
       <div class="drhead"><b>claude.ai</b> <span>recent chats</span></div>
       <div class="drrow"><i class="cdot on"></i><span class="sname">Writing the first chapter</span><em class="schip">Opus 5</em><span class="sval">now</span></div>
-      <div class="drrow"><i class="cdot"></i><span class="sname">Trip planning, day three</span><em class="schip">Sonnet 5</em><span class="sval">2h</span></div>
     </div>
   </div>
 
@@ -461,8 +501,8 @@ footer a:hover{color:#0a8294}
   <div class="stage">
     <!-- hero copy -->
     <div class="hero">
-      <h1>Wherever Claude runs,<br><span class="g">your limit's one glance away.</span></h1>
-<p><b>Tally</b> tracks your Claude usage limit in real time - no matter where you're working: <b>web</b>, <b>Claude Code</b>, the <b>Mac app</b>, your <b>phone</b>, or a script running overnight. Always one glance away in your menu bar.</p>      <div class="row">
+      <h1>Claude and Codex limits,<br><span class="g">one glance away.</span></h1>
+<p><b>Tally</b> tracks both Claude and Codex usage in real time, with session and weekly reset windows, live coding sessions, model names, and token totals. Choose Claude, Codex, or both in your menu bar.</p>      <div class="row">
         <a class="btn" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">
           <svg viewBox="0 0 24 24"><path d="M17.05 12.04c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.32.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.25 2.74 2.21 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.69.71 2.85.69 1.18-.02 1.92-1.08 2.64-2.14.83-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.5zM14.88 5.39c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.55 1.31-.56.64-1.05 1.67-.92 2.65.97.08 1.96-.49 2.57-1.21z"/></svg>
           Download for macOS
@@ -494,11 +534,11 @@ footer a:hover{color:#0a8294}
         </div>
       </div>
 
-      <!-- Terminal · Claude Code -->
+      <!-- Terminal · Codex CLI -->
       <div class="win terminal" id="winTerm">
         <div class="bar termbar">
           <div class="tl"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i></div>
-          <span class="title">claude - ~/app - 80×24</span>
+          <span class="title">codex — ~/app — 80×24</span>
           <span class="live"><span class="cdot"></span></span>
         </div>
         <div class="term-body" id="termBody"></div>
@@ -543,10 +583,11 @@ footer a:hover{color:#0a8294}
 
   <!-- shown only on narrow widths (below the hero + panel) -->
   <div class="srcblock">
-    <p class="srccap">One limit - fed by every Claude you run ↑</p>
+    <p class="srccap">Two providers, one quiet menu-bar view ↑</p>
     <div class="sources" aria-hidden="true">
       <div class="src" title="Claude on the web"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"/></svg>Web</div>
       <div class="src" title="Claude Code in the terminal"><svg viewBox="0 0 24 24"><path d="M6 8l4 4-4 4"/><path d="M13 16h5"/></svg>Claude Code</div>
+      <div class="src" title="Codex in the terminal"><svg viewBox="0 0 24 24"><path d="M6 8l4 4-4 4"/><path d="M13 16h5"/></svg>Codex</div>
       <div class="src" title="The Claude Mac app"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg>Mac app</div>
     </div>
   </div>
@@ -590,8 +631,8 @@ footer a:hover{color:#0a8294}
   <div class="feats" id="features">
     <div class="feat">
       <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 7 4"/></svg></div>
-      <h3>One-glance ring</h3>
-      <p>Outer arc is usage, inner is your 5-hour reset window. Green → yellow → red as you climb. No clicking required.</p>
+      <h3>Claude, Codex, or both</h3>
+      <p>Choose which provider appears in the menu bar. In dual mode, each ring sits beside its own percentage. Outer arcs show usage; inner arcs show the reset window.</p>
     </div>
     <div class="feat">
       <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/></svg></div>
@@ -600,8 +641,8 @@ footer a:hover{color:#0a8294}
     </div>
     <div class="feat">
       <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3"/><path d="M13 15h4"/></svg></div>
-      <h3>Every session, in one place</h3>
-      <p>See the Claude Code sessions running on your Mac - each with its model and tokens spent, and a traffic light for what it's doing: working, waiting on you, or parked. Click one to jump straight to its terminal tab, or switch its model from the menu. Your recent claude.ai chats - web, desktop app, phone - sit right below.</p>
+      <h3>Every coding session, in one place</h3>
+      <p>See Claude Code and Codex sessions with names, effective models, billed tokens, and a traffic light for what each is doing. Click to jump to its terminal tab, or switch models directly from Tally. Recent claude.ai chats sit below.</p>
     </div>
     <div class="feat wide">
       <div class="ic"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></div>
@@ -610,8 +651,8 @@ footer a:hover{color:#0a8294}
     </div>
     <div class="feat wide">
       <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 2.4v5.3c0 4.3-3 7.5-7 8.7-4-1.2-7-4.4-7-8.7V5.4L12 3z"/></svg></div>
-      <h3>Private &amp; local - nothing leaves your Mac</h3>
-      <p>Tally uses your own Claude login, stays on your machine, and talks only to claude.ai. Session details are read from the files Claude Code already keeps on your Mac - read-only, never uploaded. No servers, no accounts, no tracking.</p>
+      <h3>Private by design</h3>
+      <p>Tally uses your own Claude and Codex logins and has no account system or analytics. Claude secrets stay in Keychain; Codex owns its ChatGPT OAuth credentials. Local session files are read-only and never uploaded.</p>
     </div>
   </div>
 
@@ -631,7 +672,7 @@ footer a:hover{color:#0a8294}
     <span>tally · <span id="ver">v1.1.0</span> · made by <a href="https://github.com/alfital2">TalTools</a></span>
     <span><a href="terms.html">terms</a> · <a href="privacy.html">privacy</a> · <a href="support.html">support</a> · <a href="https://github.com/alfital2/tally-app/releases/latest">releases</a> · <a href="https://github.com/alfital2/tally-app">github</a></span>
   </footer>
-  <p class="disc">Independent project, not affiliated with or endorsed by Anthropic. “Claude” is a trademark of Anthropic.</p>
+  <p class="disc">Independent project, not affiliated with or endorsed by Anthropic or OpenAI. “Claude,” “ChatGPT,” and “Codex” are trademarks of their respective owners.</p>
 </section>
 
 <script>
@@ -760,11 +801,11 @@ footer a:hover{color:#0a8294}
     }, 850);
   }
 
-  // -- Terminal / Claude Code --
+  // -- Terminal / Codex CLI --
   const termRuns=[
-    ["❯ claude \"add tests for the parser\"","✳ Thinking…","⏺ Read(src/parser.ts)  ⎿ 142 lines","⏺ Write(test/parser.test.ts)  ⎿ +38 lines","⏺ Bash(npm test)  ⎿ 12 passing","✓ done · ↑ 9.4k  ↓ 2.1k tokens"],
-    ["❯ claude \"fix the failing lint job\"","✳ Thinking…","⏺ Bash(npm run lint)  ⎿ 3 problems","⏺ Edit(src/app.tsx)  ⎿ 3 fixes","⏺ Bash(npm run lint)  ⎿ clean ✓","✓ done · ↑ 6.8k  ↓ 1.3k tokens"],
-    ["❯ claude \"summarise today's git log\"","✳ Thinking…","⏺ Bash(git log --oneline -20)","⏺ Write(CHANGELOG.md)  ⎿ +24 lines","✓ done · ↑ 7.1k  ↓ 1.6k tokens"]
+    ["❯ codex \"add tests for the parser\"","✳ Working…","⏺ Read(src/parser.ts)  ⎿ 142 lines","⏺ Write(test/parser.test.ts)  ⎿ +38 lines","⏺ Bash(npm test)  ⎿ 12 passing","✓ done · 11.5k tokens"],
+    ["❯ codex \"fix the failing lint job\"","✳ Working…","⏺ Bash(npm run lint)  ⎿ 3 problems","⏺ Edit(src/app.tsx)  ⎿ 3 fixes","⏺ Bash(npm run lint)  ⎿ clean ✓","✓ done · 8.1k tokens"],
+    ["❯ codex \"summarise today's git log\"","✳ Working…","⏺ Bash(git log --oneline -20)","⏺ Write(CHANGELOG.md)  ⎿ +24 lines","✓ done · 8.7k tokens"]
   ];
   function cls(t){return t[0]==='❯'?'cmd':t[0]==='✳'?'think':t[0]==='⏺'?'tool':t[0]==='✓'?'ok':'dim';}
   function printLines(lines, idx, done){

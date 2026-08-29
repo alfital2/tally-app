@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Tally · Privacy Policy</title>
-<meta name="description" content="Privacy Policy for Tally, a macOS menu-bar app that tracks your Claude.ai session and weekly usage. Tally does not collect or sell your data." />
+<meta name="description" content="Privacy Policy for Tally, a macOS menu-bar app that tracks Claude and Codex usage. Tally does not collect or sell your data." />
 <meta name="robots" content="all" />
 <link rel="icon" href="favicon.ico?v=3" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=3" />
@@ -74,20 +74,21 @@
 <main>
 <div class="wrap">
   <h1>Privacy <span class="grad">Policy</span></h1>
-  <div class="updated">Last updated: 14 June 2026</div>
+  <div class="updated">Last updated: 29 August 2026</div>
 
-  <p class="lead">Tally is built to be private by design. It runs on your Mac, uses your own Claude.ai login, and does not collect, transmit, or sell your personal data.</p>
-  <p>This Privacy Policy explains what information the Tally application ("Tally", "the app") handles and how. The app is provided by <b>Tal&nbsp;Alfi (TalTools)</b> ("we", "us"). Tally is an independent project and is not affiliated with, sponsored by, or endorsed by Anthropic. "Claude" is a trademark of Anthropic.</p>
+  <p class="lead">Tally is built to be private by design. It runs on your Mac, uses your own Claude and Codex logins, and does not collect, transmit, or sell your personal data.</p>
+  <p>This Privacy Policy explains what information the Tally application ("Tally", "the app") handles and how. The app is provided by <b>Tal&nbsp;Alfi (TalTools)</b> ("we", "us"). Tally is independent and is not affiliated with, sponsored by, or endorsed by Anthropic or OpenAI.</p>
 
   <div class="box">
     <h3>The short version</h3>
-    <p style="margin:0">Tally does not have a server, an account system, or analytics. Your Claude.ai session stays on your Mac in the macOS Keychain. We never see your prompts, conversations, usage figures, or login. There is nothing for us to collect, because nothing is sent to us.</p>
+  <p style="margin:0">Tally does not have a server, an account system, or analytics. Your Claude.ai session stays in the macOS Keychain. Codex owns and refreshes its own ChatGPT credentials; Tally never receives or stores that token. We never see your prompts, conversations, usage figures, or login.</p>
   </div>
 
   <h2>1. Information stored on your device</h2>
   <p>Everything Tally needs lives locally on your Mac and never leaves it except to talk to the services described in section 2:</p>
   <ul>
     <li><b>Your Claude.ai session.</b> When you sign in, Tally captures your Claude.ai session cookie and organization identifier so it can read your usage. These are stored securely in the <b>macOS Keychain</b> on your device. They are never transmitted to us or any third party other than claude.ai itself.</li>
+    <li><b>Your Codex account.</b> Tally connects to the installed Codex CLI through its local App Server. Codex handles ChatGPT OAuth, credential storage, and refresh. Tally receives only account metadata, rate-limit data, and local thread information needed for display.</li>
     <li><b>App preferences.</b> Small settings such as your alert thresholds, refresh interval, ring/bar display choice, and launch-at-login preference are stored in standard macOS user defaults on your device.</li>
   </ul>
   <p>We do not have access to any of this. Deleting the app and signing out removes the session from your Keychain.</p>
@@ -96,6 +97,7 @@
   <p>Tally makes only the outbound connections required to do its job:</p>
   <ul>
     <li><b>claude.ai</b> — Tally signs in with your own Claude.ai account and reads your session and weekly usage from Claude.ai's usage endpoint. This is the same data the Claude.ai web app shows you. Tally does not read, store, or transmit your prompts, conversations, or any other account content.</li>
+    <li><b>Codex App Server</b> — Tally asks your locally installed Codex CLI for account status, usage limits, available models, and recent local threads. The Codex CLI communicates with OpenAI under your existing ChatGPT/Codex account.</li>
     <li><b>GitHub</b> — outside the Mac App Store, the app checks GitHub for new versions to power in-app updates. The Mac App Store edition relies on the App Store for updates instead.</li>
   </ul>
   <p>Tally does not contact any analytics, advertising, tracking, or telemetry service. It has no such code.</p>
