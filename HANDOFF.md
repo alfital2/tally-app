@@ -1,23 +1,23 @@
 ## Status
 
-The standalone Tally marketing site now presents Tally as a Claude + Codex usage monitor rather than a Claude-only utility. Homepage copy and the live mock cover dual menu-bar gauges, equal-size quota rings for both providers, concise provider session rows, models, token totals, terminal jumps, and model switching. The surrounding workspace includes a live Codex CLI terminal mock. Privacy, terms, and support copy accurately explain the separate Claude Keychain and Codex App Server authentication paths.
+The standalone Tally site now presents drag-and-drop task handoff between Claude Code and Codex alongside its existing dual-provider usage and session monitoring. The live popover mock demonstrates a complete Codex-to-Claude move: the source row collapses, the destination row appears, and both provider summaries update before the loop resets. The feature grid includes a concise explanation. The static page parses cleanly and was visually reviewed at desktop width.
 
 ## Recent changes
 
-- Reframed metadata and hero messaging around Claude and Codex limits.
-- Extended the live mock with a second menu-bar gauge, full compact Codex session/weekly rings, and one concise session row per provider.
-- Matched Claude and Codex gauge sizes and converted the animated terminal window from Claude Code to Codex CLI so both ecosystems are represented visually.
-- Updated feature copy for provider selection, combined sessions, model switching, token totals, and local privacy.
-- Updated privacy, terms, support, legal dates, and trademark/disclaimer language for OpenAI/Codex.
+- Added a restrained cursor-and-session animation directly to the existing Tally popover mock so the handoff is demonstrated in the product UI rather than as a separate illustration.
+- Added a sixth feature card explaining that local conversation and repository state move with the task, including the exhausted-source-agent use case.
+- Updated hero and metadata copy to make handoff discoverable without changing the page's core limits-monitor positioning.
+- Rebalanced the feature grid into two even rows of three and preserved a no-animation experience for visitors who prefer reduced motion.
+- Completed the demo's landing state so it changes the real-looking provider lists after the cursor drops the session instead of merely fading out a floating drag ghost.
 
 ## Open questions / blockers
 
-- Changes are local and have not been committed, pushed, or deployed.
+- The Tally app handoff implementation is ready to merge, but a new downloadable app release will still be needed before the website's latest-download link delivers this advertised feature.
 - The pre-existing untracked `index-future.html` concept remains untouched.
 
 ## Next steps
 
-1. Review the live responsive layout, especially the taller session mock on narrow screens.
-2. Commit and deploy when approved.
+1. Confirm the public GitHub Pages deployment completes after this approved push.
+2. Ship an app release containing session handoff so the download matches the website.
 
-_Last updated: 2026-08-29 by Codex_
+_Last updated: 2026-08-31 by Codex_

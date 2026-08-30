@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Tally · Live in your menu bar</title>
-<meta name="description" content="Tally is a tiny macOS menu-bar app that tracks Claude and Codex usage, reset windows, and live coding sessions — so you never hit an AI limit by surprise." />
+<meta name="description" content="Tally is a tiny macOS menu-bar app that tracks Claude and Codex usage, reset windows, live coding sessions, and smooth handoffs between agents." />
 <link rel="icon" href="favicon.ico?v=3" sizes="any" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3" />
 <meta name="theme-color" content="#0b0d12" />
@@ -111,6 +111,73 @@ a{color:inherit;text-decoration:none}
 .drrow .sname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
 .drrow .schip{font-style:normal;font-size:10px;font-weight:600;color:#c2c9d6;background:rgba(255,255,255,.09);padding:1px 5px;border-radius:5px}
 .drrow .sval{font-family:var(--mono);font-size:10.5px;color:#8b93a4;min-width:36px;text-align:right}
+.handoff-demo{position:relative;isolation:isolate}
+.agent-session{position:relative;margin:0 -5px;padding:4px 5px;border-radius:7px}
+.agent-session+.agent-session{margin-top:2px}
+.agent-session .drhead{margin-bottom:5px}
+.claude-drop::after{content:"";position:absolute;inset:0;border-radius:7px;pointer-events:none;
+  background:rgba(79,214,230,.10);border:1px dashed rgba(79,214,230,.82);opacity:0;
+  animation:handoffTarget 7s ease-in-out 2.2s infinite}
+.handoff-ghost{position:absolute;z-index:3;left:5px;right:5px;top:60px;height:25px;display:flex;align-items:center;gap:7px;
+  padding:0 6px;border-radius:6px;background:rgba(39,45,56,.96);border:1px solid rgba(255,255,255,.13);
+  box-shadow:0 8px 20px rgba(0,0,0,.35);font-size:12px;color:#e9edf2;opacity:0;pointer-events:none;
+  animation:handoffGhost 7s cubic-bezier(.3,.8,.2,1) 2.2s infinite}
+.handoff-ghost .sname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.handoff-ghost .schip{font-style:normal;font-size:10px;font-weight:600;color:#c2c9d6;background:rgba(255,255,255,.09);padding:1px 5px;border-radius:5px}
+.handoff-source{overflow:hidden;animation:handoffSource 7s ease-in-out 2.2s infinite}
+.handoff-arrival{height:0;min-height:0;overflow:hidden;padding-top:0;padding-bottom:0;opacity:0;
+  animation:handoffArrival 7s ease-in-out 2.2s infinite}
+.handoff-label,.handoff-meta{display:inline-grid}
+.handoff-meta{margin-left:auto}
+.drhead .handoff-label>span,.drhead .handoff-meta>span{grid-area:1/1;margin-left:0;font-size:inherit;color:inherit}
+.handoff-after{opacity:0}
+.handoff-before{animation:handoffBefore 7s ease-in-out 2.2s infinite}
+.handoff-after{animation:handoffAfter 7s ease-in-out 2.2s infinite}
+.handoff-cursor{position:absolute;z-index:4;left:0;top:0;width:18px;height:24px;fill:#fff;stroke:#20242c;stroke-width:1.2;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.55));opacity:0;pointer-events:none;
+  animation:handoffCursor 7s cubic-bezier(.3,.8,.2,1) 2.2s infinite}
+@keyframes handoffCursor{
+  0%,10%{opacity:0;transform:translate(204px,79px)}
+  16%,30%{opacity:1;transform:translate(180px,72px)}
+  51%,63%{opacity:1;transform:translate(102px,25px)}
+  69%,100%{opacity:0;transform:translate(102px,25px)}
+}
+@keyframes handoffGhost{
+  0%,20%{opacity:0;transform:translateY(0) scale(.98)}
+  25%,31%{opacity:.94;transform:translateY(0) scale(.98)}
+  51%,62%{opacity:.96;transform:translateY(-47px) scale(.98)}
+  68%,100%{opacity:0;transform:translateY(-47px) scale(.98)}
+}
+@keyframes handoffTarget{
+  0%,42%{opacity:0}
+  50%,67%{opacity:1}
+  76%,100%{opacity:0}
+}
+@keyframes handoffSource{
+  0%,20%{height:25px;opacity:1}
+  26%,58%{height:25px;opacity:.18}
+  65%,88%{height:0;min-height:0;padding-top:0;padding-bottom:0;opacity:0}
+  96%,100%{height:25px;opacity:1}
+}
+@keyframes handoffArrival{
+  0%,57%{height:0;min-height:0;padding-top:0;padding-bottom:0;opacity:0;transform:translateY(5px)}
+  65%,88%{height:25px;min-height:25px;opacity:1;transform:translateY(0)}
+  96%,100%{height:0;min-height:0;padding-top:0;padding-bottom:0;opacity:0;transform:translateY(5px)}
+}
+@keyframes handoffBefore{
+  0%,58%{opacity:1}
+  65%,88%{opacity:0}
+  96%,100%{opacity:1}
+}
+@keyframes handoffAfter{
+  0%,58%{opacity:0}
+  65%,88%{opacity:1}
+  96%,100%{opacity:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .handoff-cursor,.handoff-ghost,.handoff-arrival{display:none}
+  .claude-drop::after,.handoff-source,.handoff-before,.handoff-after{animation:none}
+}
 /* the traffic light: green running, amber waiting on you, red parked */
 .sdot,.cdot{width:7px;height:7px;border-radius:50%;flex:none;box-sizing:border-box;border:1.5px solid #FF453A}
 .sdot.run{background:#34D058;border-color:transparent;box-shadow:0 0 7px rgba(52,208,88,.75);animation:sdotPulse 2.4s ease-in-out infinite}
@@ -348,8 +415,7 @@ a{color:inherit;text-decoration:none}
 .below{background:#f5f6f2;color:#1a2a26;padding:96px 7vw 30px}
 .below .lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#0a8294}
 .below h2{font-weight:800;font-size:clamp(30px,4.4vw,52px);letter-spacing:-.03em;margin:12px 0 56px;max-width:16ch;line-height:1.05;color:#14201d}
-/* Six tracks so the five cards fall 3-then-2 with no dead cell: the first three
-   span two tracks each, the last two span three. */
+/* Six tracks: two even rows of three cards. */
 .feats{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(18,40,36,.1);border:1px solid rgba(18,40,36,.1);border-radius:20px;overflow:hidden}
 .feat{grid-column:span 2}
 .feat.wide{grid-column:span 3}
@@ -483,11 +549,24 @@ footer a:hover{color:#0a8294}
     <div class="drplan">Plan: Plus · Updated just now</div>
 
     <!-- live Claude Code and Codex sessions -->
-    <div class="drsec">
-      <div class="drhead"><b>Claude Code · 1</b> session <span>1 working</span></div>
-      <div class="drrow"><i class="sdot run"></i><span class="sname">tally-0e</span><em class="schip">Opus 5</em><span class="sval" id="mockTok">133K</span></div>
-      <div class="drhead" style="margin-top:8px"><b>Codex · 1</b> session <span>1 working</span></div>
-      <div class="drrow"><i class="sdot run"></i><span class="sname">Ship Codex integration</span><em class="schip">Sol 5.6</em><span class="sval">84K</span></div>
+    <div class="drsec handoff-demo">
+      <div class="agent-session claude-drop">
+        <div class="drhead">
+          <b class="handoff-label"><span class="handoff-before">Claude Code · 1 session</span><span class="handoff-after">Claude Code · 2 sessions</span></b>
+          <span class="handoff-meta"><span class="handoff-before">1 working</span><span class="handoff-after">2 working</span></span>
+        </div>
+        <div class="drrow"><i class="sdot run"></i><span class="sname">tally-0e</span><em class="schip">Opus 5</em><span class="sval" id="mockTok">133K</span></div>
+        <div class="drrow handoff-arrival" aria-hidden="true"><i class="sdot run"></i><span class="sname">Ship Codex integration</span><em class="schip">Opus 5</em><span class="sval">new</span></div>
+      </div>
+      <div class="agent-session">
+        <div class="drhead">
+          <b class="handoff-label"><span class="handoff-before">Codex · 1 session</span><span class="handoff-after">Codex · 0 sessions</span></b>
+          <span class="handoff-meta"><span class="handoff-before">1 working</span><span class="handoff-after">none running</span></span>
+        </div>
+        <div class="drrow handoff-source"><i class="sdot run"></i><span class="sname">Ship Codex integration</span><em class="schip">Sol 5.6</em><span class="sval">84K</span></div>
+      </div>
+      <div class="handoff-ghost" aria-hidden="true"><i class="sdot run"></i><span class="sname">Ship Codex integration</span><em class="schip">Sol 5.6</em></div>
+      <svg class="handoff-cursor" viewBox="0 0 22 28" aria-hidden="true"><path d="M3 2v20l5.2-5.1 3.5 8.1 4.1-1.9-3.6-7.8h7.2z"/></svg>
     </div>
 
     <!-- what's happening on claude.ai -->
@@ -502,7 +581,7 @@ footer a:hover{color:#0a8294}
     <!-- hero copy -->
     <div class="hero">
       <h1>Claude and Codex limits,<br><span class="g">one glance away.</span></h1>
-<p><b>Tally</b> tracks both Claude and Codex usage in real time, with session and weekly reset windows, live coding sessions, model names, and token totals. Choose Claude, Codex, or both in your menu bar.</p>      <div class="row">
+<p><b>Tally</b> tracks both Claude and Codex usage in real time, with reset windows, live coding sessions, model names, token totals, and drag-and-drop handoffs between agents.</p>      <div class="row">
         <a class="btn" href="https://github.com/alfital2/tally-app/releases/latest/download/Tally.dmg">
           <svg viewBox="0 0 24 24"><path d="M17.05 12.04c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.32.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.25 2.74 2.21 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.69.71 2.85.69 1.18-.02 1.92-1.08 2.64-2.14.83-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.5zM14.88 5.39c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.55 1.31-.56.64-1.05 1.67-.92 2.65.97.08 1.96-.49 2.57-1.21z"/></svg>
           Download for macOS
@@ -626,8 +705,8 @@ footer a:hover{color:#0a8294}
 </section>
 
 <section class="below">
-  <span class="lab">// what the ring does</span>
-  <h2>Five quiet jobs.</h2>
+  <span class="lab">// what Tally does</span>
+  <h2>Six quiet jobs.</h2>
   <div class="feats" id="features">
     <div class="feat">
       <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 7 4"/></svg></div>
@@ -644,15 +723,20 @@ footer a:hover{color:#0a8294}
       <h3>Every coding session, in one place</h3>
       <p>See Claude Code and Codex sessions with names, effective models, billed tokens, and a traffic light for what each is doing. Click to jump to its terminal tab, or switch models directly from Tally. Recent claude.ai chats sit below.</p>
     </div>
-    <div class="feat wide">
+    <div class="feat">
       <div class="ic"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></div>
       <h3>Alert before the wall</h3>
       <p>Set a threshold - say 80% - and get pinged separately for session and weekly. Surprise cut-offs, gone.</p>
     </div>
-    <div class="feat wide">
+    <div class="feat">
       <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 2.4v5.3c0 4.3-3 7.5-7 8.7-4-1.2-7-4.4-7-8.7V5.4L12 3z"/></svg></div>
       <h3>Private by design</h3>
       <p>Tally uses your own Claude and Codex logins and has no account system or analytics. Claude secrets stay in Keychain; Codex owns its ChatGPT OAuth credentials. Local session files are read-only and never uploaded.</p>
+    </div>
+    <div class="feat">
+      <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 8h12"/><path d="m12 4 4 4-4 4"/><path d="M20 16H8"/><path d="m12 12-4 4 4 4"/></svg></div>
+      <h3>Hand off without starting over</h3>
+      <p>Drag a Claude Code or Codex session onto the other provider. Tally carries its local conversation and repository state across—even when the first agent has reached its usage limit.</p>
     </div>
   </div>
 
