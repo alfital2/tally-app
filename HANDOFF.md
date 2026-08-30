@@ -1,6 +1,6 @@
 ## Status
 
-The standalone Tally site now presents drag-and-drop task handoff between Claude Code and Codex alongside its existing dual-provider usage and session monitoring. The live popover mock demonstrates a complete Codex-to-Claude move: the source row collapses, the destination row appears, and both provider summaries update before the loop resets. The feature grid includes a concise explanation. The static page parses cleanly and was visually reviewed at desktop width.
+The standalone Tally site presents drag-and-drop task handoff between Claude Code and Codex alongside its dual-provider usage and session monitoring. The live popover mock demonstrates a complete Codex-to-Claude move: the source row collapses, the destination row appears, and both provider summaries update before the loop resets. The feature grid includes a concise explanation. Commit `7218663` is pushed to `origin/main`, and the updated page was confirmed live at `tallyrate.site`.
 
 ## Recent changes
 
@@ -9,6 +9,7 @@ The standalone Tally site now presents drag-and-drop task handoff between Claude
 - Updated hero and metadata copy to make handoff discoverable without changing the page's core limits-monitor positioning.
 - Rebalanced the feature grid into two even rows of three and preserved a no-animation experience for visitors who prefer reduced motion.
 - Completed the demo's landing state so it changes the real-looking provider lists after the cursor drops the session instead of merely fading out a floating drag ghost.
+- Published the approved site update and confirmed the public domain serves the new handoff-aware page.
 
 ## Open questions / blockers
 
@@ -17,7 +18,6 @@ The standalone Tally site now presents drag-and-drop task handoff between Claude
 
 ## Next steps
 
-1. Confirm the public GitHub Pages deployment completes after this approved push.
-2. Ship an app release containing session handoff so the download matches the website.
+1. Ship an app release containing session handoff so the download matches the website.
 
 _Last updated: 2026-08-31 by Codex_
