@@ -1,6 +1,6 @@
 ## Status
 
-The standalone Tally site presents drag-and-drop task handoff between Claude Code and Codex alongside its dual-provider usage and session monitoring. The live popover mock demonstrates a complete Codex-to-Claude move. Tally 1.5.2 is published as the latest GitHub release with notarized DMG and signed Sparkle ZIP assets; `appcast.xml` is ready to publish build 10 to existing users. The pre-existing untracked `index-future.html` remains untouched.
+The standalone Tally site presents drag-and-drop task handoff between Claude Code and Codex alongside its dual-provider usage and session monitoring. The live popover mock demonstrates a complete Codex-to-Claude move. Tally 1.5.2 is the latest GitHub release with notarized DMG and signed Sparkle ZIP assets. The public `appcast.xml` serves build 10 to existing users, and the website's latest-download URL resolves to the v1.5.2 DMG. The pre-existing untracked `index-future.html` remains untouched.
 
 ## Recent changes
 
@@ -18,6 +18,6 @@ The standalone Tally site presents drag-and-drop task handoff between Claude Cod
 
 ## Next steps
 
-1. Push the 1.5.2 appcast and confirm it is served publicly.
+1. Monitor the release and cut a follow-up only if customer feedback reveals a regression.
 
 _Last updated: 2026-09-01 by Codex_
